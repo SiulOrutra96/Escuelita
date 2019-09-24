@@ -245,6 +245,6 @@ export class AlumnosService {
     return clase;
   }
 
-  darAsistencia(alumnoId: string, asistencia: Asistencia) {
+  cambiarAsistencia(alumno: Alumno) {
   }
 }

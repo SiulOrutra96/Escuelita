@@ -108,7 +108,7 @@ export class SeederService {
       // if (clases.length <= 0) {
         // this.clasesService.agregarClase(new Clase(
         //   'Matemáticas',
-        //   [new DiaClase([1], 2)],
+        //   [new DiaClase([1], 1)],
         //   this.obtenerGrupoAleatorio()
         // )).then(clase => {
         //   this.alumnosService.inicializarAsistenciasClase(clase.id);

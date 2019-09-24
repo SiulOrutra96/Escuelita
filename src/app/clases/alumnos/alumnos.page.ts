@@ -41,7 +41,6 @@ export class AlumnosPage implements OnInit, OnDestroy {
         this.clase = clase;
         this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
           this.alumnos = alumnos;
-          console.log('alumnos: ', alumnos);
         });
       });
     });

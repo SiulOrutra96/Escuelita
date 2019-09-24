@@ -3,12 +3,12 @@ import { DiaSemana } from './fecha.model';
 
 export enum HoraClase {
     '7:00' = 1,
-    '8:00' = 2,
+    '8:00',
     '9:00',
     '10:00',
     '11:00',
     '12:00',
-    '1:00',
+    '13:00',
 }
 
 export class DiaClase {

@@ -16,29 +16,44 @@
     </ion-row>
   </ion-grid> -->
 
-  <ion-list>
-    <ion-item *ngFor="let alumno of alumnos; let i = index">
-      <ion-grid [ngClass]="{'inactive': !alumno.activo}">
-        <ion-row align-items-center>
-          <ion-col size="1">{{ alumno.numeroLista }}</ion-col>
-          <ion-col size="4">{{ alumno.nombre }}</ion-col>
-          <ion-col size="4">{{ alumno.apellido }}</ion-col>
-          <ion-col size="3">
-            <!-- <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 0 ? 'medium' : 'success'" class="boton-letra"
-              (click)="darAsistencia(alumno.id, 0, i)">
-              A
-            </ion-button>
-            <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 1 ? 'medium' : 'danger'" class="boton-letra"
-              (click)="darAsistencia(alumno.id, 1, i)">
-              F
-            </ion-button>
-            <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 2 ? 'medium' : 'warning'" class="boton-letra"
-              (click)="darAsistencia(alumno.id, 2, i)">
-              J
-            </ion-button> -->
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row padding-bottom justify-content-center>
+      <ion-col text-center>
+        <ion-title>
+          <h1 text-wrap>{{ hoy | fecha : 'larga' }}</h1>
+          <h3>{{ clase.nombre + ' - ' + clase.grupo.nombre }}</h3>
+        </ion-title>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let alumno of alumnos; let i = index">
+            <ion-grid no-padding [ngClass]="{'inactive': !alumno.activo}">
+              <ion-row align-items-center>
+                <ion-col no-padding size="1">{{ alumno.numeroLista }}</ion-col>
+                <ion-col no-padding size="4">{{ alumno.nombre }}</ion-col>
+                <ion-col no-padding size="4">{{ alumno.apellido }}</ion-col>
+                <ion-col no-padding size="3">
+                  <ion-button [color]="asistencias[i] !== undefined && asistencias[i] !== 0 ? 'medium' : 'success'"
+                    class="boton-letra" (click)="darAsistencia(alumno.id, 0, i)">
+                    A
+                  </ion-button>
+                  <ion-button [color]="asistencias[i] !== undefined && asistencias[i] !== 1 ? 'medium' : 'danger'"
+                    class="boton-letra" (click)="darAsistencia(alumno.id, 1, i)">
+                    F
+                  </ion-button>
+                  <ion-button [color]="asistencias[i] !== undefined && asistencias[i] !== 2 ? 'medium' : 'warning'"
+                    class="boton-letra" (click)="darAsistencia(alumno.id, 2, i)">
+                    J
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

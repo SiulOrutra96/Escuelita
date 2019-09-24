@@ -1,9 +1,25 @@
 export enum DiaSemana {
-    LUNES = 1,
+    DOMINGO,
+    LUNES,
     MARTES,
     MIERCOLES,
     JUEVES,
-    VIERNES
+    VIERNES,
+    SABADO
+}
+
+export enum Mes {
+    ENERO,
+    FEBRERO,
+    MARZO,
+    ABRIL,
+    MAYO,
+    JUNIO,
+    JULIO,
+    AGOSTO,
+    SEPTIEMBRE,
+    OCTUBRE,
+    DICIEMBRE
 }
 
 export class Fecha {
