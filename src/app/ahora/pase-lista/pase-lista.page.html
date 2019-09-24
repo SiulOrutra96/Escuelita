@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Pase de Lista</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <ion-grid *ngIf="!alumnos || alumnos.length <= 0">
+    <ion-row>
+      <ion-col>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+  <ion-list>
+    <ion-item *ngFor="let alumno of alumnos; let i = index">
+      <ion-grid [ngClass]="{'inactive': !alumno.activo}">
+        <ion-row align-items-center>
+          <ion-col size="1">{{ alumno.numeroLista }}</ion-col>
+          <ion-col size="4">{{ alumno.nombre }}</ion-col>
+          <ion-col size="4">{{ alumno.apellido }}</ion-col>
+          <ion-col size="3">
+            <!-- <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 0 ? 'medium' : 'success'" class="boton-letra"
+              (click)="darAsistencia(alumno.id, 0, i)">
+              A
+            </ion-button>
+            <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 1 ? 'medium' : 'danger'" class="boton-letra"
+              (click)="darAsistencia(alumno.id, 1, i)">
+              F
+            </ion-button>
+            <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 2 ? 'medium' : 'warning'" class="boton-letra"
+              (click)="darAsistencia(alumno.id, 2, i)">
+              J
+            </ion-button> -->
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+</ion-content>

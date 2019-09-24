@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Historial de Asistencias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="x-scroll">
+    <table class="tablita">
+      <tr>
+        <th text-center>No.</th>
+        <th text-center>Nombre</th>
+        <th text-center>Apellido</th>
+        <ng-container *ngIf="alumnos && alumnos.length > 0">
+          <th *ngFor="let asistencia of alumnos[0].asistencias" class="fecha">{{ asistencia.fecha }}</th>
+        </ng-container>
+      </tr>
+      <tr *ngFor="let alumno of alumnos; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ alumno.nombre }}</td>
+        <td>{{ alumno.apellido }}</td>
+        <td *ngFor="let asistencia of alumno.asistencias" [class]="EstadoAsistencia[asistencia.estado]" text-center>
+          <span>{{ EstadoAsistencia[asistencia.estado].substr(0,1) }}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ion-content>

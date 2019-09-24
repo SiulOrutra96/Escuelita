@@ -1,3 +1,34 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu side="start" menuId="m1">
+    <ion-header padding>
+      <ion-title>
+        Escuelita
+      </ion-title>
+    </ion-header>
+    
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle menu="m1">
+          <ion-item routerLink="/ahora/tabs/pase-lista">
+            <ion-icon name="time" slot="start"></ion-icon>
+            <ion-label>Ahora</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle menu="m1">
+          <ion-item routerLink="/asistencias/">
+            <ion-icon name="clipboard" slot="start"></ion-icon>
+            <ion-label>Asistencias</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle menu="m1">
+          <ion-item routerLink="/clases">
+            <ion-icon name="contacts" slot="start"></ion-icon>
+            <ion-label>Alumnos</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet main></ion-router-outlet>
 </ion-app>
