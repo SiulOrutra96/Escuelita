@@ -1,0 +1,2 @@
+# Escuelita
+Administrador escolar
