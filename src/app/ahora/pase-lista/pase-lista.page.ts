@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Alumno, Asistencia } from 'src/app/models/alumno.model';
+import { Alumno } from 'src/app/models/alumno.model';
 import { HoraClase, Clase } from 'src/app/models/clase.model';
 import { AlumnosService } from 'src/app/services/alumnos.service';
 import { ClasesService } from 'src/app/services/clases.service';
@@ -13,14 +13,13 @@ import { ClasesService } from 'src/app/services/clases.service';
 })
 export class PaseListaPage implements OnInit, OnDestroy {
 
-  // HorasClase = Object.keys(HoraClase).map(key => HoraClase[key]).filter(value => typeof value === 'string') as string[];
   alumnos: Alumno[];
   alumnosSub: Subscription;
-  clase: Clase;
+  clase: Clase = new Clase();
   claseSub: Subscription;
   buscando = false;
   asistencias = [];
-  hoy: Date;
+  hoy: Date = new Date();
   hoyString: string;
   horas: {horaInicio: string, horaFin: string}[];
 
