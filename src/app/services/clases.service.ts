@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
 import { Clase } from '../models/clase.model';
@@ -40,6 +40,24 @@ export class ClasesService {
           const datos = a.payload.doc.data();
           return { id, ...datos };
         });
+      })
+    );
+  }
+
+  obtenerClasesPorHora(dia: number, hora: number) {
+    return this.clases.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const id = a.payload.doc.id;
+          const datos = a.payload.doc.data();
+          return { id, ...datos };
+        }).filter(clase => {
+          if (clase.dias.findIndex(diaClase => {
+            return (diaClase.hora === hora && diaClase.dias.indexOf(dia) >= 0);
+          }) >= 0) {
+            return clase;
+          }
+        })[0];
       })
     );
   }

@@ -24,18 +24,18 @@
           <ion-col size="4">{{ alumno.nombre }}</ion-col>
           <ion-col size="4">{{ alumno.apellido }}</ion-col>
           <ion-col size="3">
-            <!-- <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 0 ? 'medium' : 'success'" class="boton-letra"
+            <ion-button [color]="asistencias[i] !== undefined && asistencias[i] !== 0 ? 'medium' : 'success'" class="boton-letra"
               (click)="darAsistencia(alumno.id, 0, i)">
               A
             </ion-button>
-            <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 1 ? 'medium' : 'danger'" class="boton-letra"
+            <ion-button [color]="asistencias[i] !== undefined && asistencias[i] !== 1 ? 'medium' : 'danger'" class="boton-letra"
               (click)="darAsistencia(alumno.id, 1, i)">
               F
             </ion-button>
-            <ion-button [color]="asistencias[i].estado !== undefined && asistencias[i].estado !== 2 ? 'medium' : 'warning'" class="boton-letra"
+            <ion-button [color]="asistencias[i] !== undefined && asistencias[i] !== 2 ? 'medium' : 'warning'" class="boton-letra"
               (click)="darAsistencia(alumno.id, 2, i)">
               J
-            </ion-button> -->
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
