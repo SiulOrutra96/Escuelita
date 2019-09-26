@@ -26,8 +26,7 @@ const routes: Routes = [
     path: '',
     redirectTo: '/ahora/tabs/pase-lista',
     pathMatch: 'full'
-  },
-  { path: 'historial', loadChildren: './historial/historial.module#HistorialPageModule' }
+  }
 ];
 
 @NgModule({

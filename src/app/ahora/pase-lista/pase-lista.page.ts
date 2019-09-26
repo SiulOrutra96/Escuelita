@@ -1,10 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { Alumno } from 'src/app/models/alumno.model';
 import { HoraClase, Clase } from 'src/app/models/clase.model';
 import { AlumnosService } from 'src/app/services/alumnos.service';
 import { ClasesService } from 'src/app/services/clases.service';
+import { RelojService } from 'src/app/services/reloj.service';
 
 @Component({
   selector: 'app-pase-lista',
@@ -17,28 +20,39 @@ export class PaseListaPage implements OnInit, OnDestroy {
   alumnosSub: Subscription;
   clase: Clase = new Clase();
   claseSub: Subscription;
+  relojSub: Subscription;
   buscando = false;
   asistencias = [];
   hoy: Date = new Date();
   hoyString: string;
-  horas: {horaInicio: string, horaFin: string}[];
+  horas: { horaInicio: string, horaFin: string }[];
 
   constructor(
     private alumnosService: AlumnosService,
-    private clasesService: ClasesService
+    private clasesService: ClasesService,
+    private route: ActivatedRoute,
+    private relojService: RelojService
   ) { }
 
   ngOnInit() {
-    this.inicializarHoras();
-  }
+    // this.relojService.iniciarReloj();
+    // this.relojService.reloj.pipe(take(1)).subscribe(tiempo => {
+    //   console.log(tiempo);
+    //   this.relojService.pararReloj();
+    // });
+    // // this.relojSub = this.relojService.reloj.pipe(take(1)).subscribe(tiempo => {
+    // //   console.log(tiempo);
+    // // });
 
-  ionViewDidEnter() {
     this.hoy = new Date();
+
     this.hoy.setHours(8);
     this.hoy.setMinutes(10);
     this.hoy.setDate(13);
+
     this.hoyString = this.deFechaAString(this.hoy);
     const horaString = this.deHoraAString(this.hoy);
+    this.inicializarHoras();
 
     const periodoIndex = this.horas.findIndex(periodo => {
       return (horaString >= periodo.horaInicio && horaString <= periodo.horaFin);
@@ -46,10 +60,12 @@ export class PaseListaPage implements OnInit, OnDestroy {
 
     this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1).subscribe(clase => {
       this.clase = clase;
-      this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
-        this.alumnos = alumnos;
-        this.inicializarAsitencias();
-      });
+      if (clase) {
+        this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+          this.alumnos = alumnos;
+          this.inicializarAsitencias();
+        });
+      }
     });
   }
 
@@ -60,6 +76,11 @@ export class PaseListaPage implements OnInit, OnDestroy {
 
     if (this.claseSub) {
       this.claseSub.unsubscribe();
+    }
+
+    if (this.relojSub) {
+      this.relojSub.unsubscribe();
+      this.relojService.pararReloj();
     }
   }
 
@@ -89,7 +110,7 @@ export class PaseListaPage implements OnInit, OnDestroy {
       const horaInicio = this.deStringAHora(item);
       // se añaden 50 minutos
       const horaFin = new Date(horaInicio.getTime() + 50 * 60 * 1000);
-      return {horaInicio: this.deHoraAString(horaInicio), horaFin: this.deHoraAString(horaFin)};
+      return { horaInicio: this.deHoraAString(horaInicio), horaFin: this.deHoraAString(horaFin) };
     });
   }
 

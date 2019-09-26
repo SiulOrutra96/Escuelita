@@ -8,21 +8,32 @@
 </ion-header>
 
 <ion-content>
+  <ion-segment (ionChange)="segmentoCambiado($event)">
+    <ion-segment-button value="t1" checked>Trimestre 1</ion-segment-button>
+    <ion-segment-button value="t2" [disabled]="segundoTrimestre.inicio > hoyString">Trimestre 2</ion-segment-button>
+    <ion-segment-button value="t3" [disabled]="tercerTrimestre.inicio > hoyString">Trimestre 3</ion-segment-button>
+    <ion-segment-button value="general">General</ion-segment-button>
+  </ion-segment>
+
   <div class="x-scroll">
     <table class="tablita">
       <tr>
-        <th text-center>No.</th>
-        <th text-center>Nombre</th>
-        <th text-center>Apellido</th>
+        <th>No.</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
         <ng-container *ngIf="alumnos && alumnos.length > 0">
-          <th *ngFor="let asistencia of alumnos[0].asistencias" class="fecha">{{ asistencia.fecha }}</th>
+          <th *ngFor="let asistencia of asistenciasFiltradas[0]" class="fecha" text-nowrap>
+            <div>{{ asistencia.fecha }}</div>
+          </th>
         </ng-container>
       </tr>
-      <tr *ngFor="let alumno of alumnos; let i = index">
+      <tr *ngFor="let alumno of alumnos; let i = index"
+        [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0}">
         <td>{{ i + 1 }}</td>
-        <td>{{ alumno.nombre }}</td>
-        <td>{{ alumno.apellido }}</td>
-        <td *ngFor="let asistencia of alumno.asistencias" [class]="EstadoAsistencia[asistencia.estado]" text-center>
+        <td text-nowrap>{{ alumno.nombre }}</td>
+        <td text-nowrap>{{ alumno.apellido }}</td>
+        <td *ngFor="let asistencia of asistenciasFiltradas[i]" [class]="EstadoAsistencia[asistencia.estado]"
+          class="asistencia" text-center>
           <span>{{ EstadoAsistencia[asistencia.estado].substr(0,1) }}</span>
         </td>
       </tr>

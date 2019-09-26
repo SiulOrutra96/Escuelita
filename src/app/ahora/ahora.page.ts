@@ -7,9 +7,5 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AhoraPage implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
