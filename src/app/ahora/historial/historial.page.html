@@ -9,15 +9,15 @@
 
 <ion-content>
   <ion-segment (ionChange)="segmentoCambiado($event)">
-    <ion-segment-button value="t1" checked>Trimestre 1</ion-segment-button>
-    <ion-segment-button value="t2" [disabled]="segundoTrimestre.inicio > hoyString">Trimestre 2</ion-segment-button>
-    <ion-segment-button value="t3" [disabled]="tercerTrimestre.inicio > hoyString">Trimestre 3</ion-segment-button>
+    <ion-segment-button value="t1" checked>Periodo 1</ion-segment-button>
+    <ion-segment-button value="t2" [disabled]="segundoTrimestre.inicio > hoyString">Periodo 2</ion-segment-button>
+    <ion-segment-button value="t3" [disabled]="tercerTrimestre.inicio > hoyString">Periodo 3</ion-segment-button>
     <ion-segment-button value="general">General</ion-segment-button>
   </ion-segment>
 
   <div class="x-scroll">
     <table class="tablita">
-      <tr>
+      <tr class="borde">
         <th>No.</th>
         <th>Nombre</th>
         <th>Apellido</th>
@@ -28,7 +28,7 @@
         </ng-container>
       </tr>
       <tr *ngFor="let alumno of alumnos; let i = index"
-        [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0}">
+        [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0, 'borde-abajo': i === alumnos.length - 1}">
         <td>{{ i + 1 }}</td>
         <td text-nowrap>{{ alumno.nombre }}</td>
         <td text-nowrap>{{ alumno.apellido }}</td>

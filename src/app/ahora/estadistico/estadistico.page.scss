@@ -25,14 +25,11 @@
 .x-scroll {
     overflow: auto;
     height: -webkit-fill-available;
-    margin-bottom: 50px;
 }
 
 .tablita {
     tr {
         font-size: smaller;
-        // border-top: 2px solid var(--ion-color-medium);
-        // border-bottom: 2px solid var(--ion-color-medium);
 
         &.borde {
             border-top: 2px solid var(--ion-color-medium);
@@ -48,22 +45,34 @@
             padding: 8px;
             text-align: start;
 
-            &.fecha {
-                font-size: small;
+            &.cabecera-superior {
+                border-left: 2px solid var(--ion-color-medium);
+                border-right: 2px solid var(--ion-color-medium);
+            }
+
+            &.cabecera-vertical {
+                text-align: start;
                 padding: 0px;
-                height: 90px;
+                height: 110px;
+                min-width: 65px;
+                max-width: 65px;
                 border-left: 2px solid var(--ion-color-medium);
                 border-right: 2px solid var(--ion-color-medium);
 
                 div {
                     transform: rotate(-90deg);
-                    margin: 0 -13px;
+                    margin: 0 -17px;
                 }
             }
         }
 
         td {
             padding: 8px;
+
+            &.borde {
+                border-left: 2px solid var(--ion-color-medium);
+                border-right: 2px solid var(--ion-color-medium);
+            }
 
             .asistencia {
                 font-size: small;

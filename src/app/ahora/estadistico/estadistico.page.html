@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Estadístico</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="x-scroll">
+    <table class="tablita">
+      <tr text-center class="borde">
+        <th rowspan="2">No.</th>
+        <th rowspan="2">Nombre</th>
+        <th rowspan="2">Apellido</th>
+        <th *ngFor="let trimestre of trimestres" colspan="5" class="cabecera-superior" text-center>{{ trimestre.nombre }}</th>
+      </tr>
+      <tr class="borde">
+        <ng-container *ngFor="let trimestre of trimestres">
+          <th class="cabecera-vertical">
+            <div text-wrap text-center>Sesiones impartidas</div>
+          </th>
+          <th class="cabecera-vertical">
+            <div text-wrap text-center>Faltas</div>
+          </th>
+          <th class="cabecera-vertical">
+            <div text-wrap text-center class="margin-17">Justificaciones</div>
+          </th>
+          <th class="cabecera-vertical">
+            <div text-wrap text-center>Asistencias</div>
+          </th>
+          <th class="cabecera-vertical">
+            <div text-wrap text-center>Porcentage de asistencias</div>
+          </th>
+        </ng-container>
+      </tr>
+      <tr *ngFor="let alumno of alumnos; let i = index"
+        [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0, 'borde-abajo': i === alumnos.length - 1}">
+        <td>{{ i + 1 }}</td>
+        <td text-nowrap>{{ alumno.nombre }}</td>
+        <td text-nowrap>{{ alumno.apellido }}</td>
+        <ng-container *ngFor="let trimestre of trimestres">
+          <td class="borde" text-center>{{ trimestre.sesiones }}</td>
+          <td class="borde" text-center>{{ trimestre.faltas[i] }}</td>
+          <td class="borde" text-center>{{ trimestre.justificaciones[i] }}</td>
+          <td class="borde" text-center>{{ trimestre.asistencias[i] }}</td>
+          <td class="borde" text-center>{{ trimestre.porcentaje[i] | number : '0.0-2' }}%</td>
+      </ng-container>
+      </tr>
+    </table>
+  </div>
+</ion-content>

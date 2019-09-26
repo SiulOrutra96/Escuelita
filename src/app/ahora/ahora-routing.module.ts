@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: './historial/historial.module#HistorialPageModule'
       },
       {
+        path: 'estadistico',
+        loadChildren: './estadistico/estadistico.module#EstadisticoPageModule'
+      },
+      {
         path: '',
         redirectTo: '/ahora/tabs/pase-lista',
         pathMatch: 'full'
@@ -26,7 +30,8 @@ const routes: Routes = [
     path: '',
     redirectTo: '/ahora/tabs/pase-lista',
     pathMatch: 'full'
-  }
+  },
+  { path: 'estadistico', loadChildren: './estadistico/estadistico.module#EstadisticoPageModule' }
 ];
 
 @NgModule({
