@@ -33,11 +33,13 @@ export class Clase {
         nombre?: string,
         dias?: DiaClase[],
         grupo?: Grupo,
+        maestroId?: string,
         id?: string
     ) {
         this.nombre = nombre ? nombre : undefined;
         this.dias = dias ? dias : [new DiaClase()];
         this.grupo = grupo ? grupo : new Grupo();
+        this.maestroId = maestroId ? maestroId : undefined;
         this.id = id ? id : undefined;
     }
 }

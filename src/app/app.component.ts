@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+
 import { SeederService } from './services/seeder.service';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +18,9 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private seederService: SeederService
+    private seederService: SeederService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -26,5 +31,10 @@ export class AppComponent {
       this.splashScreen.hide();
       this.seederService.main();
     });
+  }
+
+  cerrarSesion() {
+    this.authService.cerrarSesion();
+    this.router.navigateByUrl('/auth');
   }
 }

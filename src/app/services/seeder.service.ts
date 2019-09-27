@@ -10,6 +10,9 @@ import { Grupo } from '../models/grupo.model';
 import { Clase, DiaClase } from '../models/clase.model';
 import { FechasService } from './fechas.service';
 import { Fecha } from '../models/fecha.model';
+import { MaestrosService } from './maestros.service';
+import { AuthService } from '../auth/auth.service';
+import { Maestro } from '../models/maestro.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +25,14 @@ export class SeederService {
     private alumnosService: AlumnosService,
     private gruposService: GruposService,
     private clasesService: ClasesService,
-    private fechasService: FechasService
+    private fechasService: FechasService,
+    private maestrosService: MaestrosService,
+    private authService: AuthService
   ) { }
 
   main() {
     // this.fechasSeeder();
+    // this.maestrosSeeder();
     // this.gruposService.obtenerGrupos().pipe(take(1)).subscribe(grupos => {
     //   this.grupos = grupos;
     //   // this.gruposSeeder();
@@ -38,6 +44,56 @@ export class SeederService {
   obtenerGrupoAleatorio() {
     const aleatorio = Math.round(Math.random() * (this.grupos.length - 1));
     return this.grupos[aleatorio];
+  }
+
+  private maestrosSeeder() {
+    this.maestrosService.obtenerMaestros().pipe(take(1)).subscribe(maestros => {
+      if (maestros.length <= 0) {
+        this.authService.crearUsuario(
+          'maestro1@prueba.com',
+          '123456'
+        ).then(res => {
+          this.maestrosService.agregarMaestro(new Maestro(
+            'Albus',
+            'Dumbledore',
+            res.user.uid
+          ));
+        });
+
+        this.authService.crearUsuario(
+          'maestro2@prueba.com',
+          '123456'
+        ).then(res => {
+          this.maestrosService.agregarMaestro(new Maestro(
+            'Minerva',
+            'McGonagall',
+            res.user.uid
+          ));
+        });
+
+        this.authService.crearUsuario(
+          'maestro3@prueba.com',
+          '123456'
+        ).then(res => {
+          this.maestrosService.agregarMaestro(new Maestro(
+            'Severus',
+            'Snape',
+            res.user.uid
+          ));
+        });
+
+        this.authService.crearUsuario(
+          'maestro4@prueba.com',
+          '123456'
+        ).then(res => {
+          this.maestrosService.agregarMaestro(new Maestro(
+            'Remus',
+            'Lupin',
+            res.user.uid
+          ));
+        });
+      }
+    });
   }
 
   private alumnosSeeder() {
@@ -105,43 +161,43 @@ export class SeederService {
 
   private clasesSeeder() {
     this.clasesService.obtenerClases().pipe(take(1)).subscribe(clases => {
-      // if (clases.length <= 0) {
-        // this.clasesService.agregarClase(new Clase(
-        //   'Matemáticas',
-        //   [new DiaClase([1], 1)],
-        //   this.obtenerGrupoAleatorio()
-        // )).then(clase => {
-        //   this.alumnosService.inicializarAsistenciasClase(clase.id);
-        // });
-        // this.clasesService.agregarClase(new Clase(
-        //   'Matemáticas',
-        //   [new DiaClase([1, 2, 3], 3)],
-        //   this.obtenerGrupoAleatorio()
-        // )).then(clase => {
-        //   this.alumnosService.inicializarAsistenciasClase(clase.id);
-        // });
-        // this.clasesService.agregarClase(new Clase(
-        //   'Español',
-        //   [new DiaClase([1, 3, 5], 2)],
-        //   this.obtenerGrupoAleatorio()
-        // )).then(clase => {
-        //   this.alumnosService.inicializarAsistenciasClase(clase.id);
-        // });
-        // this.clasesService.agregarClase(new Clase(
-        //   'Español',
-        //   [new DiaClase([2, 4], 3)],
-        //   this.obtenerGrupoAleatorio()
-        // )).then(clase => {
-        //   this.alumnosService.inicializarAsistenciasClase(clase.id);
-        // });
-        // this.clasesService.agregarClase(new Clase(
-        //   'Computación',
-        //   [new DiaClase([1, 2, 3, 4, 5], 4)],
-        //   this.obtenerGrupoAleatorio()
-        // )).then(clase => {
-        //   this.alumnosService.inicializarAsistenciasClase(clase.id);
-        // });
-      // }
+      if (clases.length <= 0) {
+        this.clasesService.agregarClase(new Clase(
+          'Matemáticas',
+          [new DiaClase([1], 1)],
+          this.obtenerGrupoAleatorio()
+        )).then(clase => {
+          this.alumnosService.inicializarAsistenciasClase(clase.id);
+        });
+        this.clasesService.agregarClase(new Clase(
+          'Matemáticas',
+          [new DiaClase([1, 2, 3], 3)],
+          this.obtenerGrupoAleatorio()
+        )).then(clase => {
+          this.alumnosService.inicializarAsistenciasClase(clase.id);
+        });
+        this.clasesService.agregarClase(new Clase(
+          'Español',
+          [new DiaClase([1, 3, 5], 2)],
+          this.obtenerGrupoAleatorio()
+        )).then(clase => {
+          this.alumnosService.inicializarAsistenciasClase(clase.id);
+        });
+        this.clasesService.agregarClase(new Clase(
+          'Español',
+          [new DiaClase([2, 4], 3)],
+          this.obtenerGrupoAleatorio()
+        )).then(clase => {
+          this.alumnosService.inicializarAsistenciasClase(clase.id);
+        });
+        this.clasesService.agregarClase(new Clase(
+          'Computación',
+          [new DiaClase([1, 2, 3, 4, 5], 4)],
+          this.obtenerGrupoAleatorio()
+        )).then(clase => {
+          this.alumnosService.inicializarAsistenciasClase(clase.id);
+        });
+      }
     });
   }
 
