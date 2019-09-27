@@ -5,6 +5,7 @@ import { AlumnosService } from 'src/app/services/alumnos.service';
 import { Alumno, EstadoAsistencia } from 'src/app/models/alumno.model';
 import { ClasesService } from 'src/app/services/clases.service';
 import { Clase, HoraClase } from 'src/app/models/clase.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-estadistico',
@@ -15,6 +16,7 @@ export class EstadisticoPage implements OnInit {
 
   alumnos: Alumno[];
   alumnosSub: Subscription;
+  claseId: string;
   clase: Clase;
   claseSub: Subscription;
   buscando = false;
@@ -61,7 +63,8 @@ export class EstadisticoPage implements OnInit {
 
   constructor(
     private alumnosService: AlumnosService,
-    private clasesService: ClasesService
+    private clasesService: ClasesService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -80,14 +83,29 @@ export class EstadisticoPage implements OnInit {
       return (horaString >= periodo.horaInicio && horaString <= periodo.horaFin);
     });
 
-    this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1).subscribe(clase => {
-      this.clase = clase;
-      if (clase) {
-        this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
-          this.alumnos = alumnos;
-          this.inicializarAsitencias();
-          this.filtrarAsistencias();
-          console.log(this.trimestres);
+    this.route.paramMap.subscribe(parametros => {
+      console.log('mmm', parametros);
+      if (parametros.has('claseId')) {
+        this.claseId = parametros.get('claseId');
+        this.claseSub = this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
+          this.clase = clase;
+          this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+            this.alumnos = alumnos;
+            this.inicializarAsitencias();
+            this.filtrarAsistencias();
+          });
+        });
+      } else {
+        this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1).subscribe(clase => {
+          this.clase = clase;
+          if (clase) {
+            this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+              this.alumnos = alumnos;
+              this.inicializarAsitencias();
+              this.filtrarAsistencias();
+              console.log(this.trimestres);
+            });
+          }
         });
       }
     });

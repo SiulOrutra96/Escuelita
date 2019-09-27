@@ -31,7 +31,6 @@ const routes: Routes = [
     redirectTo: '/ahora/tabs/pase-lista',
     pathMatch: 'full'
   },
-  { path: 'estadistico', loadChildren: './estadistico/estadistico.module#EstadisticoPageModule' }
 ];
 
 @NgModule({

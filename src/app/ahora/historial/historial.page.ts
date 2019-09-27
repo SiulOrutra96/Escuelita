@@ -17,6 +17,7 @@ export class HistorialPage implements OnInit, OnDestroy {
 
   alumnos: Alumno[];
   alumnosSub: Subscription;
+  claseId: string;
   clase: Clase;
   claseSub: Subscription;
   buscando = false;
@@ -54,13 +55,28 @@ export class HistorialPage implements OnInit, OnDestroy {
       return (horaString >= periodo.horaInicio && horaString <= periodo.horaFin);
     });
 
-    this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1).subscribe(clase => {
-      this.clase = clase;
-      if (clase) {
-        this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
-          this.alumnos = alumnos;
-          this.inicializarAsitencias();
-          this.filtrarAsistencias();
+    this.route.paramMap.subscribe(parametros => {
+      console.log('mmm', parametros);
+      if (parametros.has('claseId')) {
+        this.claseId = parametros.get('claseId');
+        this.claseSub = this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
+          this.clase = clase;
+          this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+            this.alumnos = alumnos;
+            this.inicializarAsitencias();
+            this.filtrarAsistencias();
+          });
+        });
+      } else {
+        this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1).subscribe(clase => {
+          this.clase = clase;
+          if (clase) {
+            this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+              this.alumnos = alumnos;
+              this.inicializarAsitencias();
+              this.filtrarAsistencias();
+            });
+          }
         });
       }
     });

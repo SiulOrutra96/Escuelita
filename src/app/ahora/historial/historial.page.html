@@ -1,9 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
+      <ion-back-button *ngIf="claseId" defaultHref="/asistencias"></ion-back-button>
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Historial de Asistencias</ion-title>
+    <ion-title>
+      Historial de Asistencias {{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 

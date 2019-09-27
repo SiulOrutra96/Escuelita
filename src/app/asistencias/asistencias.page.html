@@ -8,5 +8,27 @@
 </ion-header>
 
 <ion-content>
-  ¡Funciona!
+  <ion-list>
+    <ion-item *ngFor="let clase of clases" detail [routerLink]="['/', 'asistencias', clase.id, 'tabs', 'historial', clase.id]">
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col size="5">
+            <ion-label>
+              <h2>{{ clase.nombre }}</h2>
+            </ion-label>
+          </ion-col>
+          <ion-col size="3">
+            <ion-label>
+              <h2>{{ clase.grupo.nombre }}</h2>
+            </ion-label>
+          </ion-col>
+          <!-- <ion-col size="2">
+            <ion-button color="primary" [routerLink]="['/', 'asistencias', clase.id]">
+              <ion-icon name="arrow-round-forward" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-col> -->
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 </ion-content>

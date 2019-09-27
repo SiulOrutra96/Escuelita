@@ -1,9 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
+      <ion-back-button *ngIf="claseId" defaultHref="/asistencias"></ion-back-button>
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Estadístico</ion-title>
+    <ion-title>
+      Estadístico {{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,7 +17,8 @@
         <th rowspan="2">No.</th>
         <th rowspan="2">Nombre</th>
         <th rowspan="2">Apellido</th>
-        <th *ngFor="let trimestre of trimestres" colspan="5" class="cabecera-superior" text-center>{{ trimestre.nombre }}</th>
+        <th *ngFor="let trimestre of trimestres" colspan="5" class="cabecera-superior" text-center>
+          {{ trimestre.nombre }}</th>
       </tr>
       <tr class="borde">
         <ng-container *ngFor="let trimestre of trimestres">
@@ -46,7 +50,7 @@
           <td class="borde" text-center>{{ trimestre.justificaciones[i] }}</td>
           <td class="borde" text-center>{{ trimestre.asistencias[i] }}</td>
           <td class="borde" text-center>{{ trimestre.porcentaje[i] | number : '0.0-2' }}%</td>
-      </ng-container>
+        </ng-container>
       </tr>
     </table>
   </div>

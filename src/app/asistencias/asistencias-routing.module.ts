@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: AsistenciasPage
+  },
+  {
+    path: ':claseId',
+    loadChildren: './asistencias-clase/asistencias-clase.module#AsistenciasClasePageModule'
   }
 ];
 
