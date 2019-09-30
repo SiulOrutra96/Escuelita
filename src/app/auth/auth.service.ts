@@ -12,7 +12,6 @@ import { MaestrosService } from '../services/maestros.service';
 export class AuthService {
 
   private _usuarioAutenticado = false;
-  private _usuarioId = new BehaviorSubject<string>(undefined);
   private usuario = new BehaviorSubject<Maestro>(undefined);
 
   constructor(
@@ -24,13 +23,11 @@ export class AuthService {
       console.log('uA: ', this._usuarioAutenticado);
       console.log('u: ', user);
       if (user) {
-        this._usuarioId.next(user.uid);
         this.maestrosService.obtenerMaestro(user.uid).pipe(take(1)).toPromise().then(maestro => {
           console.log('maestro: ', maestro);
           this.usuario.next(maestro);
         });
       } else {
-        this._usuarioId.next(undefined);
         this.usuario.next(undefined);
       }
     });
@@ -38,10 +35,6 @@ export class AuthService {
 
   usuarioActual() {
     return this.usuario.asObservable();
-  }
-
-  usuarioId() {
-    return this._usuarioId.getValue();
   }
 
   usuarioAutenticado() {

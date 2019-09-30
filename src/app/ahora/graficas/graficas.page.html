@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button *ngIf="claseId" defaultHref="/grupos"></ion-back-button> -->
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Gráficas
+      <!-- {{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }} -->
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

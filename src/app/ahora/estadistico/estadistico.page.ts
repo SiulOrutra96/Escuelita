@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AlumnosService } from 'src/app/services/alumnos.service';
@@ -6,19 +6,21 @@ import { Alumno, EstadoAsistencia } from 'src/app/models/alumno.model';
 import { ClasesService } from 'src/app/services/clases.service';
 import { Clase, HoraClase } from 'src/app/models/clase.model';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-estadistico',
   templateUrl: './estadistico.page.html',
   styleUrls: ['./estadistico.page.scss'],
 })
-export class EstadisticoPage implements OnInit {
+export class EstadisticoPage implements OnInit, OnDestroy {
 
   alumnos: Alumno[];
   alumnosSub: Subscription;
   claseId: string;
   clase: Clase;
   claseSub: Subscription;
+  authSub: Subscription;
   buscando = false;
   asistencias = [];
   asistenciasFiltradas = [];
@@ -64,7 +66,8 @@ export class EstadisticoPage implements OnInit {
   constructor(
     private alumnosService: AlumnosService,
     private clasesService: ClasesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -83,8 +86,8 @@ export class EstadisticoPage implements OnInit {
       return (horaString >= periodo.horaInicio && horaString <= periodo.horaFin);
     });
 
+    this.buscando = true;
     this.route.paramMap.subscribe(parametros => {
-      console.log('mmm', parametros);
       if (parametros.has('claseId')) {
         this.claseId = parametros.get('claseId');
         this.claseSub = this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
@@ -93,18 +96,24 @@ export class EstadisticoPage implements OnInit {
             this.alumnos = alumnos;
             this.inicializarAsitencias();
             this.filtrarAsistencias();
+            this.buscando = false;
           });
         });
       } else {
-        this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1).subscribe(clase => {
-          this.clase = clase;
-          if (clase) {
-            this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
-              this.alumnos = alumnos;
-              this.inicializarAsitencias();
-              this.filtrarAsistencias();
-              console.log(this.trimestres);
-            });
+        this.authSub = this.authService.usuarioActual().subscribe(usuario => {
+          if (usuario) {
+            this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1, usuario.id)
+              .subscribe(clase => {
+                this.clase = clase;
+                if (clase) {
+                  this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+                    this.alumnos = alumnos;
+                    this.inicializarAsitencias();
+                    this.filtrarAsistencias();
+                    this.buscando = false;
+                  });
+                }
+              });
           }
         });
       }
@@ -112,7 +121,17 @@ export class EstadisticoPage implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.alumnosSub.unsubscribe();
+    if (this.alumnosSub) {
+      this.alumnosSub.unsubscribe();
+    }
+
+    if (this.claseSub) {
+      this.claseSub.unsubscribe();
+    }
+
+    if (this.authSub) {
+      this.authSub.unsubscribe();
+    }
   }
 
   inicializarAsitencias() {

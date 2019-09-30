@@ -2,26 +2,28 @@ import { Component, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular
 import { ModalController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { GruposService } from 'src/app/services/grupos.service';
 import { Grupo } from 'src/app/models/grupo.model';
 import { Clase, DiaClase, HoraClase } from 'src/app/models/clase.model';
 import { DiaSemana } from 'src/app/models/fecha.model';
 import { ClasesService } from 'src/app/services/clases.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-nueva-clase',
   templateUrl: './nueva-clase.component.html',
   styleUrls: ['./nueva-clase.component.scss'],
 })
-export class NuevaClaseComponent implements OnInit, OnDestroy {
+export class NuevaClaseComponent implements OnInit {
 
   @Input() claseId: string;
   HorasClase = Object.keys(HoraClase).map(key => HoraClase[key]).filter(value => typeof value === 'string') as string[];
   diasSemana = Object.keys(DiaSemana).map(key => DiaSemana[key]).filter(value => typeof value === 'string') as string[];
   diasSemanaRestantes = [];
   grupos: Grupo[] = [];
-  gruposSub: Subscription;
+  maestroId: string;
 
   clase: Clase;
   buscando = false;
@@ -29,33 +31,36 @@ export class NuevaClaseComponent implements OnInit, OnDestroy {
   grupo: Grupo = new Grupo();
   dias: DiaClase[] = [];
 
-
   constructor(
     private clasesService: ClasesService,
     private gruposService: GruposService,
     private modalCtrl: ModalController,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.agregarDia();
-    this.gruposSub = this.gruposService.obtenerGrupos().subscribe(grupos => {
-      this.grupos = grupos;
+    this.buscando = true;
+    this.authService.usuarioActual().pipe(take(1)).subscribe(usuario => {
+      this.maestroId = usuario.id;
+      this.gruposService.obtenerGrupos().pipe(take(1)).subscribe(grupos => {
+        this.grupos = grupos;
 
-      if (this.claseId) {
-        this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
-          this.clase = clase;
-          this.nombre = clase.nombre;
-          this.grupo = clase.grupo;
-          this.dias = clase.dias;
-          this.cdr.markForCheck();
-        });
-      }
+        if (this.claseId) {
+          this.clasesService.obtenerClase(this.claseId).pipe(take(1)).subscribe(clase => {
+            this.clase = clase;
+            this.nombre = clase.nombre;
+            this.grupo = clase.grupo;
+            this.dias = clase.dias;
+            this.cdr.markForCheck();
+            this.buscando = false;
+          });
+        } else {
+          this.buscando = false;
+        }
+      });
     });
-  }
-
-  ngOnDestroy() {
-    this.gruposSub.unsubscribe();
   }
 
   // TODO - hacer que funcione
@@ -94,7 +99,8 @@ export class NuevaClaseComponent implements OnInit, OnDestroy {
     const nuevaClase = new Clase(
       claseForm.value.nombre,
       this.dias,
-      this.grupos.find(grupo => grupo.id === claseForm.value.grupo)
+      this.grupos.find(grupo => grupo.id === claseForm.value.grupo),
+      this.maestroId
     );
 
     this.modalCtrl.dismiss({

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 
 import { Alumno } from 'src/app/models/alumno.model';
 import { AlumnosService } from 'src/app/services/alumnos.service';
@@ -19,7 +19,7 @@ export class AlumnosPage implements OnInit, OnDestroy {
   alumnos: Alumno[] = [];
   alumnosSub: Subscription;
   claseSub: Subscription;
-  clase: Clase = new Clase();
+  clase: Clase;
   buscando = false;
 
   constructor(
@@ -27,11 +27,13 @@ export class AlumnosPage implements OnInit, OnDestroy {
     private alumnosService: AlumnosService,
     private clasesService: ClasesService,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.buscando = true;
     this.route.paramMap.subscribe(parametros => {
       if (!parametros.has('claseId')) {
         this.router.navigateByUrl('clases/');
@@ -41,6 +43,7 @@ export class AlumnosPage implements OnInit, OnDestroy {
         this.clase = clase;
         this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
           this.alumnos = alumnos;
+          this.buscando = false;
         });
       });
     });
@@ -65,8 +68,13 @@ export class AlumnosPage implements OnInit, OnDestroy {
       })
       .then(res => {
         if (res.role === 'agregar') {
-          this.alumnosService.inicializarAsistenciasAlumno(res.data.alumno).then(alumno => {
-            this.alumnosService.agregarAlumno(alumno);
+          this.loadingCtrl.create({ message: 'Agregando alumno...' }).then(cargador => {
+            cargador.present();
+            this.alumnosService.inicializarAsistenciasAlumno(res.data.alumno).then(alumno => {
+              this.alumnosService.agregarAlumno(alumno).then(() => {
+                cargador.dismiss();
+              });
+            });
           });
         }
       });
@@ -81,7 +89,12 @@ export class AlumnosPage implements OnInit, OnDestroy {
       })
       .then(res => {
         if (res.role === 'editar') {
-          this.alumnosService.actualizarAlumno(res.data.alumno);
+          this.loadingCtrl.create({ message: 'Agregando alumno...' }).then(cargador => {
+            cargador.present();
+            this.alumnosService.actualizarAlumno(res.data.alumno).then(() => {
+              cargador.dismiss();
+            });
+          });
         }
       });
   }
@@ -96,7 +109,12 @@ export class AlumnosPage implements OnInit, OnDestroy {
       }, {
         text: 'Desactivar',
         handler: () => {
-          this.alumnosService.desactivarAlumno(alumnoId);
+          this.loadingCtrl.create({ message: 'Desactivar alumno...' }).then(cargador => {
+            cargador.present();
+            this.alumnosService.desactivarAlumno(alumnoId).then(() => {
+              cargador.dismiss();
+            });
+          });
         }
       }]
     }).then(alerta => {
@@ -114,7 +132,12 @@ export class AlumnosPage implements OnInit, OnDestroy {
       }, {
         text: 'Reactivar',
         handler: () => {
-          this.alumnosService.activarAlumno(alumnoId);
+          this.loadingCtrl.create({ message: 'Activando alumno...' }).then(cargador => {
+            cargador.present();
+            this.alumnosService.activarAlumno(alumnoId).then(() => {
+              cargador.dismiss();
+            });
+          });
         }
       }]
     }).then(alerta => {
@@ -132,7 +155,12 @@ export class AlumnosPage implements OnInit, OnDestroy {
       }, {
         text: 'Eliminar',
         handler: () => {
-          this.alumnosService.eliminarAlumno(alumnoId);
+          this.loadingCtrl.create({ message: 'Eliminando alumno...' }).then(cargador => {
+            cargador.present();
+            this.alumnosService.eliminarAlumno(alumnoId).then(() => {
+              cargador.dismiss();
+            });
+          });
         }
       }]
     }).then(alerta => {

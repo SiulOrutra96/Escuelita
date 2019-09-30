@@ -1,20 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { SegmentChangeEventDetail } from '@ionic/core';
 
-import { Alumno, EstadoAsistencia } from 'src/app/models/alumno.model';
 import { AlumnosService } from 'src/app/services/alumnos.service';
+import { Alumno, EstadoAsistencia } from 'src/app/models/alumno.model';
 import { ClasesService } from 'src/app/services/clases.service';
 import { Clase, HoraClase } from 'src/app/models/clase.model';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
-  selector: 'app-historial',
-  templateUrl: './historial.page.html',
-  styleUrls: ['./historial.page.scss'],
+  selector: 'app-resumen-asistencias',
+  templateUrl: './resumen-asistencias.page.html',
+  styleUrls: ['./resumen-asistencias.page.scss'],
 })
-export class HistorialPage implements OnInit, OnDestroy {
+export class ResumenAsistenciasPage implements OnInit, OnDestroy {
 
   alumnos: Alumno[];
   alumnosSub: Subscription;
@@ -31,9 +30,38 @@ export class HistorialPage implements OnInit, OnDestroy {
   horas: { horaInicio: string, horaFin: string }[];
   segmentoActivo = 't1';
 
-  primerTrimestre = { inicio: '2019-09-01', fin: '2019-09-30' };
-  segundoTrimestre = { inicio: '2019-10-01', fin: '2019-10-31' };
-  tercerTrimestre = { inicio: '2019-11-01', fin: '2019-11-30' };
+  trimestres = [
+    {
+      inicio: '2019-09-01',
+      fin: '2019-09-30',
+      nombre: 'Periodo 1',
+      sesiones: 0,
+      asistencias: [],
+      faltas: [],
+      justificaciones: [],
+      porcentaje: []
+    },
+    {
+      inicio: '2019-10-01',
+      fin: '2019-10-31',
+      nombre: 'Periodo 2',
+      sesiones: 0,
+      asistencias: [],
+      faltas: [],
+      justificaciones: [],
+      porcentaje: []
+    },
+    {
+      inicio: '2019-11-01',
+      fin: '2019-11-30',
+      nombre: 'Periodo 3',
+      sesiones: 0,
+      asistencias: [],
+      faltas: [],
+      justificaciones: [],
+      porcentaje: []
+    }
+  ];
 
   constructor(
     private alumnosService: AlumnosService,
@@ -141,39 +169,48 @@ export class HistorialPage implements OnInit, OnDestroy {
   }
 
   filtrarAsistencias() {
-    if (this.segmentoActivo === 't1') {
-      this.asistenciasFiltradas = this.asistencias.map(asistencias => {
+    this.trimestres.forEach(trimestre => {
+      const sessionesTemp = this.asistencias.map(asistencias => {
         return asistencias.filter(asistencia => {
-          if (asistencia.fecha >= this.primerTrimestre.inicio && asistencia.fecha <= this.primerTrimestre.fin) {
+          if (asistencia.fecha >= trimestre.inicio && asistencia.fecha <= trimestre.fin) {
             return asistencia;
           }
         });
       });
-    } else if (this.segmentoActivo === 't2') {
-      this.asistenciasFiltradas = this.asistencias.map(asistencias => {
-        return asistencias.filter(asistencia => {
-          if (asistencia.fecha >= this.segundoTrimestre.inicio && asistencia.fecha <= this.segundoTrimestre.fin) {
-            return asistencia;
+
+      trimestre.sesiones = sessionesTemp[0].length;
+      trimestre.asistencias = sessionesTemp.map(sesiones => {
+        return sesiones.filter(sesion => {
+          if (sesion.estado === 0) {
+            return sesion;
           }
-        });
+        }).length;
       });
-    } else if (this.segmentoActivo === 't3') {
-      this.asistenciasFiltradas = this.asistencias.map(asistencias => {
-        return asistencias.filter(asistencia => {
-          if (asistencia.fecha >= this.tercerTrimestre.inicio && asistencia.fecha <= this.tercerTrimestre.fin) {
-            return asistencia;
+      trimestre.faltas = sessionesTemp.map(sesiones => {
+        return sesiones.filter(sesion => {
+          if (sesion.estado === 1) {
+            return sesion;
           }
-        });
+        }).length;
       });
-    } else if (this.segmentoActivo === 'general') {
-      this.asistenciasFiltradas = this.asistencias;
-    }
+      trimestre.justificaciones = sessionesTemp.map(sesiones => {
+        return sesiones.filter(sesion => {
+          if (sesion.estado === 2) {
+            return sesion;
+          }
+        }).length;
+      });
+
+      trimestre.porcentaje = sessionesTemp.map((s, index) => {
+        return (trimestre.asistencias[index] * 100) / trimestre.sesiones;
+      });
+    });
   }
 
-  segmentoCambiado(evento: CustomEvent<SegmentChangeEventDetail>) {
-    this.segmentoActivo = evento.detail.value;
-    this.filtrarAsistencias();
-  }
+  // segmentoCambiado(evento: CustomEvent<SegmentChangeEventDetail>) {
+  //   this.segmentoActivo = evento.detail.value;
+  //   this.filtrarAsistencias();
+  // }
 
   deFechaAString(fecha: Date) {
     let fechaString = fecha.getFullYear() + '-';

@@ -13,8 +13,16 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let clase of clases">
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngIf="!buscando">
+    <ion-item *ngFor="let clase of clases" detail [routerLink]="['/', 'clases', clase.id]">
       <ion-grid>
         <ion-row align-items-center>
           <ion-col size="5">
@@ -27,7 +35,7 @@
               <h2>{{ clase.grupo.nombre }}</h2>
             </ion-label>
           </ion-col>
-          <ion-col size="3">
+          <!-- <ion-col size="3">
             <ion-button color="primary" [routerLink]="['/', 'clases', clase.id]">
               <ion-icon name="arrow-round-forward" slot="icon-only"></ion-icon>
             </ion-button>
@@ -37,7 +45,7 @@
             <ion-button color="danger" (click)="eliminarClase(clase)">
               <ion-icon name="trash" slot="icon-only"></ion-icon>
             </ion-button>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
       </ion-grid>
     </ion-item>

@@ -3,7 +3,6 @@ import { map, filter } from 'rxjs/operators';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
 import { Clase } from '../models/clase.model';
-import { AlumnosService } from './alumnos.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,21 @@ export class ClasesService {
 
   obtenerClases() {
     return this.firestore.collection<Clase>('clases', ref => {
-      return ref.orderBy('grupo.nombre');
+      return ref.orderBy('grupo.nombre').orderBy('nombre');
+    }).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const id = a.payload.doc.id;
+          const datos = a.payload.doc.data();
+          return { id, ...datos };
+        });
+      })
+    );
+  }
+
+  obtenerClasesPorMaestro(maestroId: string) {
+    return this.firestore.collection<Clase>('clases', ref => {
+      return ref.where('maestroId', '==', maestroId).orderBy('grupo.nombre').orderBy('nombre');
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -44,8 +57,10 @@ export class ClasesService {
     );
   }
 
-  obtenerClasesPorHora(dia: number, hora: number) {
-    return this.clases.snapshotChanges().pipe(
+  obtenerClasesPorHora(dia: number, hora: number, maestroId: string) {
+    return this.firestore.collection<Clase>('clases', ref => {
+      return ref.where('maestroId', '==', maestroId);
+    }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const id = a.payload.doc.id;

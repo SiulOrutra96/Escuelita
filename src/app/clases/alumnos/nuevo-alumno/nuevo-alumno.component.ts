@@ -82,7 +82,7 @@ export class NuevoAlumnoComponent implements OnInit, OnDestroy {
     const nuevoAlumno = new Alumno(
       this.alumnoForm.value.nombre,
       this.alumnoForm.value.apellido,
-      this.alumnoForm.value.grupoId
+      this.grupoId
     );
     this.modalCtrl.dismiss({
       alumno: nuevoAlumno

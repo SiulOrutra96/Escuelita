@@ -19,6 +19,7 @@ export enum Mes {
     AGOSTO,
     SEPTIEMBRE,
     OCTUBRE,
+    NOVIEMBRE,
     DICIEMBRE
 }
 

@@ -8,15 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <!-- <ion-grid *ngIf="!alumnos || alumnos.length <= 0">
-    <ion-row>
-      <ion-col>
-
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
       </ion-col>
     </ion-row>
-  </ion-grid> -->
+  </ion-grid>
 
-  <ion-grid>
+  <ion-grid *ngIf="!buscando">
     <ion-row *ngIf="clase" padding-bottom justify-content-center>
       <ion-col text-center>
         <ion-title>

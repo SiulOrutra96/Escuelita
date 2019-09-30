@@ -18,7 +18,15 @@
     <ion-segment-button value="general">General</ion-segment-button>
   </ion-segment>
 
-  <div class="x-scroll">
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="x-scroll" *ngIf="!buscando">
     <table class="tablita">
       <tr class="borde">
         <th>No.</th>

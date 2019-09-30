@@ -4,7 +4,9 @@
       <ion-back-button defaultHref="/clases"></ion-back-button>
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Alumnos {{ clase.nombre + ' - ' + clase.grupo.nombre }}</ion-title>
+    <ion-title>
+      Alumnos <span *ngIf="clase">{{ clase.nombre + ' - ' + clase.grupo.nombre }}</span>
+    </ion-title>
     <ion-buttons slot="end" (click)="abrirModalAgregarAlumno()">
       <ion-button>
         <ion-icon name="add" slot="icon-only"></ion-icon>
@@ -14,7 +16,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngIf="!buscando">
     <ion-item *ngFor="let alumno of alumnos; let i = index">
       <ion-grid [ngClass]="{'inactive': !alumno.activo}">
         <ion-row align-items-center>
