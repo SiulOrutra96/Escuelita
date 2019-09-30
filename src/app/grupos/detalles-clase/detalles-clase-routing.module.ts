@@ -1,20 +1,28 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AsistenciasClasePage } from './asistencias-clase.page';
+import { DetallesClasePage } from './detalles-clase.page';
 
 const routes: Routes = [
   {
     path: 'tabs',
-    component: AsistenciasClasePage,
+    component: DetallesClasePage,
     children: [
+      {
+        path: 'estadistico/:claseId',
+        loadChildren: '../../ahora/estadistico/estadistico.module#EstadisticoPageModule'
+      },
       {
         path: 'historial/:claseId',
         loadChildren: '../../ahora/historial/historial.module#HistorialPageModule'
       },
       {
-        path: 'estadistico/:claseId',
-        loadChildren: '../../ahora/estadistico/estadistico.module#EstadisticoPageModule'
+        path: 'resumen-asistencias/:claseId',
+        loadChildren: '../../ahora/resumen-asistencias/resumen-asistencias.module#ResumenAsistenciasPageModule'
+      },
+      {
+        path: 'graficas/:claseId',
+        loadChildren: '../../ahora/graficas/graficas.module#GraficasPageModule'
       },
       {
         path: '',
@@ -36,4 +44,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AsistenciasClaseRoutingModule {}
+export class DetallesClaseRoutingModule {}
