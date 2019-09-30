@@ -22,22 +22,7 @@ export class AuthPage implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
-  ngOnInit() {
-    this.authSub = this.authService.usuarioAutenticado().subscribe(res => {
-      console.log('res: ', res);
-      if (res === true) {
-        this.router.navigateByUrl('/ahora/tabs/pase-lista');
-      }
-      if (this.authSub) {
-        this.authSub.unsubscribe();
-      }
-    });
-    // console.log('usuarioId: ', this.authService.usuarioId());
-    // console.log('usuario Autenticado: ', this.authService.usuarioAutenticado());
-    // if (this.authService.usuarioAutenticado()) {
-    //   this.router.navigateByUrl('/ahora/tabs/pase-lista');
-    // }
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     if (this.authSub) {

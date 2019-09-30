@@ -1,6 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { Alumno } from 'src/app/models/alumno.model';
@@ -8,6 +6,7 @@ import { HoraClase, Clase } from 'src/app/models/clase.model';
 import { AlumnosService } from 'src/app/services/alumnos.service';
 import { ClasesService } from 'src/app/services/clases.service';
 import { RelojService } from 'src/app/services/reloj.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-pase-lista',
@@ -18,9 +17,9 @@ export class PaseListaPage implements OnInit, OnDestroy {
 
   alumnos: Alumno[];
   alumnosSub: Subscription;
-  clase: Clase = new Clase();
+  clase: Clase;
   claseSub: Subscription;
-  relojSub: Subscription;
+  authSub: Subscription;
   buscando = false;
   asistencias = [];
   hoy: Date = new Date();
@@ -30,25 +29,16 @@ export class PaseListaPage implements OnInit, OnDestroy {
   constructor(
     private alumnosService: AlumnosService,
     private clasesService: ClasesService,
-    private route: ActivatedRoute,
-    private relojService: RelojService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-    // this.relojService.iniciarReloj();
-    // this.relojService.reloj.pipe(take(1)).subscribe(tiempo => {
-    //   console.log(tiempo);
-    //   this.relojService.pararReloj();
-    // });
-    // // this.relojSub = this.relojService.reloj.pipe(take(1)).subscribe(tiempo => {
-    // //   console.log(tiempo);
-    // // });
-
     this.hoy = new Date();
 
     this.hoy.setHours(8);
     this.hoy.setMinutes(10);
-    this.hoy.setDate(13);
+    this.hoy.setMonth(10);
+    this.hoy.setDate(29);
 
     this.hoyString = this.deFechaAString(this.hoy);
     const horaString = this.deHoraAString(this.hoy);
@@ -58,13 +48,22 @@ export class PaseListaPage implements OnInit, OnDestroy {
       return (horaString >= periodo.horaInicio && horaString <= periodo.horaFin);
     });
 
-    this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1).subscribe(clase => {
-      this.clase = clase;
-      if (clase) {
-        this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
-          this.alumnos = alumnos;
-          this.inicializarAsitencias();
-        });
+    this.buscando = true;
+    this.authSub = this.authService.usuarioActual().subscribe(usuario => {
+      if (usuario) {
+        this.claseSub = this.clasesService.obtenerClasesPorHora(this.hoy.getDay(), periodoIndex + 1, usuario.id)
+          .subscribe(clase => {
+            this.clase = clase;
+            if (clase) {
+              this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+                this.alumnos = alumnos;
+                this.inicializarAsitencias();
+                this.buscando = false;
+              });
+            } else {
+              this.buscando = false;
+            }
+          });
       }
     });
   }
@@ -78,9 +77,8 @@ export class PaseListaPage implements OnInit, OnDestroy {
       this.claseSub.unsubscribe();
     }
 
-    if (this.relojSub) {
-      this.relojSub.unsubscribe();
-      this.relojService.pararReloj();
+    if (this.authSub) {
+      this.authSub.unsubscribe();
     }
   }
 

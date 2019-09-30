@@ -12,12 +12,24 @@ const routes: Routes = [
         loadChildren: './pase-lista/pase-lista.module#PaseListaPageModule'
       },
       {
+        path: 'rasgos',
+        loadChildren: './rasgos/rasgos.module#RasgosPageModule'
+      },
+      {
         path: 'historial',
         loadChildren: './historial/historial.module#HistorialPageModule'
       },
       {
         path: 'estadistico',
         loadChildren: './estadistico/estadistico.module#EstadisticoPageModule'
+      },
+      {
+        path: 'resumen-asistencias',
+        loadChildren: './resumen-asistencias/resumen-asistencias.module#ResumenAsistenciasPageModule'
+      },
+      {
+        path: 'graficas',
+        loadChildren: './graficas/graficas.module#GraficasPageModule'
       },
       {
         path: '',

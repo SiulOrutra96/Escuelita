@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Platform } from '@ionic/angular';
+import { Platform, LoadingController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -20,7 +20,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     private seederService: SeederService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loadingCtrl: LoadingController
   ) {
     this.initializeApp();
   }
@@ -34,7 +35,13 @@ export class AppComponent {
   }
 
   cerrarSesion() {
-    this.authService.cerrarSesion();
-    this.router.navigateByUrl('/auth');
+    this.loadingCtrl.create({ message: 'Cerrando sesión...' })
+      .then(cargador => {
+        cargador.present();
+        this.authService.cerrarSesion().then(() => {
+          cargador.dismiss();
+          this.router.navigateByUrl('/auth');
+        });
+      });
   }
 }

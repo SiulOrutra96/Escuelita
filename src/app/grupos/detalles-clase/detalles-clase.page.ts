@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-asistencias-clase',
-  templateUrl: './asistencias-clase.page.html',
-  styleUrls: ['./asistencias-clase.page.scss'],
+  selector: 'app-detalles-clase',
+  templateUrl: './detalles-clase.page.html',
+  styleUrls: ['./detalles-clase.page.scss'],
 })
-export class AsistenciasClasePage implements OnInit {
+export class DetallesClasePage implements OnInit {
 
   claseId: string;
 
@@ -18,7 +18,7 @@ export class AsistenciasClasePage implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(parametros => {
       if (!parametros.has('claseId')) {
-        this.router.navigateByUrl('/asistencias');
+        this.router.navigateByUrl('/grupos');
       }
 
       this.claseId = parametros.get('claseId');

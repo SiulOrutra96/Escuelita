@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { take } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { take, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, from } from 'rxjs';
 
 import { Maestro } from '../models/maestro.model';
 import { MaestrosService } from '../services/maestros.service';
@@ -11,8 +11,7 @@ import { MaestrosService } from '../services/maestros.service';
 })
 export class AuthService {
 
-  private _usuarioAutenticado = new BehaviorSubject<boolean>(false);
-  private _usuarioId = new BehaviorSubject<string>(undefined);
+  private _usuarioAutenticado = false;
   private usuario = new BehaviorSubject<Maestro>(undefined);
 
   constructor(
@@ -20,16 +19,15 @@ export class AuthService {
     private maestrosService: MaestrosService
   ) {
     this.firebaseAuth.auth.onAuthStateChanged(user => {
+      this._usuarioAutenticado = user !== null;
+      console.log('uA: ', this._usuarioAutenticado);
+      console.log('u: ', user);
       if (user) {
-        console.log('mmm: ', user.uid);
-        this._usuarioAutenticado.next(true);
-        this._usuarioId.next(user.uid);
-        this.maestrosService.obtenerMaestro(user.uid).pipe(take(1)).toPromise().then(user => {
-          this.usuario.next(user);
+        this.maestrosService.obtenerMaestro(user.uid).pipe(take(1)).toPromise().then(maestro => {
+          console.log('maestro: ', maestro);
+          this.usuario.next(maestro);
         });
       } else {
-        this._usuarioAutenticado.next(false);
-        this._usuarioId.next(undefined);
         this.usuario.next(undefined);
       }
     });
@@ -39,11 +37,8 @@ export class AuthService {
     return this.usuario.asObservable();
   }
 
-  usuarioId() {
-    return this._usuarioId.asObservable();
-  }
   usuarioAutenticado() {
-    return this._usuarioAutenticado.asObservable();
+    return this._usuarioAutenticado;
   }
 
   crearUsuario(email: string, contrasenia: string) {
@@ -51,9 +46,7 @@ export class AuthService {
   }
 
   iniciarSesion(email: string, contrasenia: string) {
-    return this.firebaseAuth.auth.signInWithEmailAndPassword(email, contrasenia).then(datos => {
-      return this.maestrosService.obtenerMaestro(datos.user.uid).pipe(take(1)).toPromise();
-    });
+    return this.firebaseAuth.auth.signInWithEmailAndPassword(email, contrasenia);
   }
 
   cerrarSesion() {

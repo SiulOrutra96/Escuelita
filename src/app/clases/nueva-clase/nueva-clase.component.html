@@ -10,7 +10,16 @@
 </ion-header>
 
 <ion-content padding>
-  <form #claseForm="ngForm">
+
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <form *ngIf="!buscando" #claseForm="ngForm">
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-md="9">

@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AsistenciasPage } from './asistencias.page';
+import { GruposPage } from './grupos.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: AsistenciasPage
+    component: GruposPage
   },
   {
     path: ':claseId',
-    loadChildren: './asistencias-clase/asistencias-clase.module#AsistenciasClasePageModule'
+    loadChildren: './detalles-clase/detalles-clase.module#DetallesClasePageModule'
   }
 ];
 
@@ -20,4 +20,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AsistenciasRoutingModule { }
+export class GruposRoutingModule { }
