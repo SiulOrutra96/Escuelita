@@ -4,13 +4,39 @@ export enum EstadoAsistencia {
     JUSTIFICACION
 }
 
-export class Asistencia {
+export class Trimestre {
+    calificacionRasgos: number[];
+    calificacionFinal: number;
+
+    constructor(calificacionRasgos?: number[], calificacionFinal?: number) {
+        this.calificacionRasgos = calificacionRasgos ? calificacionRasgos : [];
+        this.calificacionFinal = calificacionFinal ? calificacionFinal : undefined;
+    }
+}
+
+export class CalificacionesRasgos {
+    trimestre1: Trimestre;
+    trimestre2: Trimestre;
+    trimestre3: Trimestre;
+
+    constructor(trimestre1?: Trimestre, trimestre2?: Trimestre, trimestre3?: Trimestre) {
+        this.trimestre1 = trimestre1 ? trimestre1 : new Trimestre();
+        this.trimestre2 = trimestre2 ? trimestre2 : new Trimestre();
+        this.trimestre3 = trimestre3 ? trimestre3 : new Trimestre();
+    }
+}
+
+export class ClaseAlumno {
     claseId: string;
     fechas: any = {};
+    calificacion: number;
+    rasgos: CalificacionesRasgos;
 
-    constructor(claseId?: string, fechas?: any) {
+    constructor(claseId?: string, fechas?: any, rasgos?: CalificacionesRasgos, calificacion?: number) {
         this.claseId = claseId ? claseId : undefined;
         this.fechas = fechas ? fechas : {};
+        this.rasgos = rasgos ? rasgos : new CalificacionesRasgos();
+        this.calificacion = calificacion ? calificacion : undefined;
     }
 }
 
@@ -20,7 +46,7 @@ export class Alumno {
     apellido: string;
     numeroLista: number;
     activo: boolean;
-    asistencias: Asistencia[];
+    clases: ClaseAlumno[];
 
     grupoId: string;
 
@@ -29,7 +55,7 @@ export class Alumno {
         apellido?: string,
         grupoId?: string,
         numeroLista?: number,
-        asistencias?: Asistencia[],
+        clases?: ClaseAlumno[],
         activo?: boolean,
         id?: string
     ) {
@@ -37,7 +63,7 @@ export class Alumno {
         this.apellido = apellido ? apellido : undefined;
         this.grupoId = grupoId ? grupoId : undefined;
         this.numeroLista = numeroLista ? numeroLista : undefined;
-        this.asistencias = asistencias ? asistencias : [];
+        this.clases = clases ? clases : [];
         this.activo = activo !== undefined ? activo : true;
         this.id = id ? id : undefined;
     }

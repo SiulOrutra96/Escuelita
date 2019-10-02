@@ -5,7 +5,7 @@
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Historial de Asistencias {{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}
+      Historial de Asistencias  <span *ngIf="clase">{{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -40,7 +40,7 @@
       </tr>
       <tr *ngFor="let alumno of alumnos; let i = index"
         [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0, 'borde-abajo': i === alumnos.length - 1}">
-        <td>{{ i + 1 }}</td>
+        <td>{{ alumno.numeroLista }}</td>
         <td text-nowrap>{{ alumno.nombre }}</td>
         <td text-nowrap>{{ alumno.apellido }}</td>
         <td *ngFor="let asistencia of asistenciasFiltradas[i]" [class]="EstadoAsistencia[asistencia.estado]"

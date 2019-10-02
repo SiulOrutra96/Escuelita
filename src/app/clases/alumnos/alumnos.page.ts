@@ -41,6 +41,7 @@ export class AlumnosPage implements OnInit, OnDestroy {
 
       this.claseSub = this.clasesService.obtenerClase(parametros.get('claseId')).subscribe(clase => {
         this.clase = clase;
+        console.log(this.clase);
         this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
           this.alumnos = alumnos;
           this.buscando = false;
@@ -89,7 +90,7 @@ export class AlumnosPage implements OnInit, OnDestroy {
       })
       .then(res => {
         if (res.role === 'editar') {
-          this.loadingCtrl.create({ message: 'Agregando alumno...' }).then(cargador => {
+          this.loadingCtrl.create({ message: 'Actualizando alumno...' }).then(cargador => {
             cargador.present();
             this.alumnosService.actualizarAlumno(res.data.alumno).then(() => {
               cargador.dismiss();
@@ -109,7 +110,7 @@ export class AlumnosPage implements OnInit, OnDestroy {
       }, {
         text: 'Desactivar',
         handler: () => {
-          this.loadingCtrl.create({ message: 'Desactivar alumno...' }).then(cargador => {
+          this.loadingCtrl.create({ message: 'Desactivando alumno...' }).then(cargador => {
             cargador.present();
             this.alumnosService.desactivarAlumno(alumnoId).then(() => {
               cargador.dismiss();

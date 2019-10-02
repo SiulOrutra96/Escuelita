@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva rasgo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button slot="icon-only" (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form #rasgoForm="ngForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-sm="8">
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input type="text" [(ngModel)]="rasgo.nombre" name="nombre" required #nombreCtrl="ngModel"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6" size-sm="3">
+          <ion-item>
+            <ion-label position="floating">Porcentaje</ion-label>
+            <ion-input type="number" [(ngModel)]="rasgo.porcentaje" name="porcentaje" min="0" max="maximo" required
+              #porcentajeCtrl="ngModel"></ion-input>
+            <!-- <ion-label>%</ion-label> -->
+          </ion-item>
+        </ion-col>
+        <ion-col align-self-center size="1" size-sm="1">
+          <ion-label>%</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-end>
+        <ion-col size="auto">
+          <ion-button margin-vertical color="primary" (click)="agregarRasgo(rasgoForm)"
+            [disabled]="rasgoForm.invalid || porcentajeCtrl.value > maximo || porcentajeCtrl.value < 0">
+            {{ agregar ? 'Agregar' : 'Editar' }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

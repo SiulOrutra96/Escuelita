@@ -5,13 +5,23 @@
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Rasgos
-      <!-- {{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }} -->
+      Rasgos <span
+        *ngIf="clase">{{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-segment (ionChange)="segmentoCambiado($event)">
+    <ion-segment-button value="rasgos" checked>Rasgos</ion-segment-button>
+    <ion-segment-button value="trimestre1">Periodo 1</ion-segment-button>
+    <ion-segment-button value="trimestre2" [disabled]="segundoTrimestre.inicio > hoyString">Periodo 2
+    </ion-segment-button>
+    <ion-segment-button value="trimestre3" [disabled]="tercerTrimestre.inicio > hoyString">Periodo 3
+    </ion-segment-button>
+    <!-- <ion-segment-button value="general">General</ion-segment-button> -->
+  </ion-segment>
+
   <ion-grid margin-top *ngIf="buscando">
     <ion-row margin-top>
       <ion-col text-center>
@@ -19,4 +29,31 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <app-lista-rasgos *ngIf="!buscando && segmentoActivo === 'rasgos'" [alumnos]="alumnos" [clase]="clase">
+  </app-lista-rasgos>
+
+  <!-- Tabla calificaciones -->
+  <div class="x-scroll" *ngIf="!buscando && segmentoActivo !== 'rasgos'">
+    <table class="tablita">
+      <tr text-center class="borde">
+        <th padding-left>No.</th>
+        <th>Nombre</th>
+        <th class="borde-der">Apellido</th>
+        <th text-center *ngFor="let rasgo of clase.rasgos[segmentoActivo]" class="borde">
+          {{ rasgo.nombre }} ({{ rasgo.porcentaje }}%)
+        </th>
+        <th text-center class="borde">Total (100%)</th>
+      </tr>
+      <tr *ngFor="let alumno of alumnos; let i = index"
+        [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0, 'borde-abajo': i === alumnos.length - 1}">
+        <td padding-left>{{ alumno.numeroLista }}</td>
+        <td>{{ alumno.nombre }}</td>
+        <td class="borde-der">{{ alumno.apellido }}</td>
+        <td text-center *ngFor="let rasgo of rasgos[i][segmentoActivo].calificacionRasgos" class="borde">{{ rasgo || rasgo === 0 ? rasgo : 'NC' }}</td>
+        <td text-center class="borde">{{ rasgos[i][segmentoActivo].calificacionFinal || rasgos[i][segmentoActivo].calificacionFinal === 0? rasgos[i][segmentoActivo].calificacionFinal : 'NC' }}</td>
+      </tr>
+    </table>
+  </div>
+  <!-- fin: Tabla calificaciones -->
 </ion-content>

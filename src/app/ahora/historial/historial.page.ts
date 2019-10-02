@@ -8,6 +8,7 @@ import { AlumnosService } from 'src/app/services/alumnos.service';
 import { ClasesService } from 'src/app/services/clases.service';
 import { Clase, HoraClase } from 'src/app/models/clase.model';
 import { AuthService } from 'src/app/auth/auth.service';
+import { FechasService } from 'src/app/services/fechas.service';
 
 @Component({
   selector: 'app-historial',
@@ -31,7 +32,7 @@ export class HistorialPage implements OnInit, OnDestroy {
   horas: { horaInicio: string, horaFin: string }[];
   segmentoActivo = 't1';
 
-  primerTrimestre = { inicio: '2019-09-01', fin: '2019-09-30' };
+  primerTrimestre = { inicio: '2019-08-01', fin: '2019-09-30' };
   segundoTrimestre = { inicio: '2019-10-01', fin: '2019-10-31' };
   tercerTrimestre = { inicio: '2019-11-01', fin: '2019-11-30' };
 
@@ -39,7 +40,8 @@ export class HistorialPage implements OnInit, OnDestroy {
     private alumnosService: AlumnosService,
     private clasesService: ClasesService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private fechasService: FechasService
   ) { }
 
   ngOnInit() {
@@ -50,8 +52,8 @@ export class HistorialPage implements OnInit, OnDestroy {
     this.hoy.setMonth(10);
     this.hoy.setDate(29);
 
-    this.hoyString = this.deFechaAString(this.hoy);
-    const horaString = this.deHoraAString(this.hoy);
+    this.hoyString = this.fechasService.deFechaAString(this.hoy);
+    const horaString = this.fechasService.deHoraAString(this.hoy);
     this.inicializarHoras();
 
     const periodoIndex = this.horas.findIndex(periodo => {
@@ -108,14 +110,14 @@ export class HistorialPage implements OnInit, OnDestroy {
 
   inicializarAsitencias() {
     this.asistencias = this.alumnos.map(alumno => {
-      return alumno.asistencias
-        .filter(asistencia => asistencia.claseId === this.clase.id)
-        .map(asistencia => {
+      return alumno.clases
+        .filter(clase => clase.claseId === this.clase.id)
+        .map(clase => {
           let fechas = [];
 
-          for (const key in asistencia.fechas) {
-            if (asistencia.fechas.hasOwnProperty(key) && key <= this.hoyString) {
-              fechas.push({ fecha: key, estado: asistencia.fechas[key] });
+          for (const key in clase.fechas) {
+            if (clase.fechas.hasOwnProperty(key) && key <= this.hoyString) {
+              fechas.push({ fecha: key, estado: clase.fechas[key] });
 
               if (key === this.hoyString) {
                 break;
@@ -133,10 +135,10 @@ export class HistorialPage implements OnInit, OnDestroy {
       .map(key => HoraClase[key])
       .filter(value => typeof value === 'string') as string[]
     ).map(item => {
-      const horaInicio = this.deStringAHora(item);
+      const horaInicio = this.fechasService.deStringAHora(item);
       // se añaden 50 minutos
       const horaFin = new Date(horaInicio.getTime() + 50 * 60 * 1000);
-      return { horaInicio: this.deHoraAString(horaInicio), horaFin: this.deHoraAString(horaFin) };
+      return { horaInicio: this.fechasService.deHoraAString(horaInicio), horaFin: this.fechasService.deHoraAString(horaFin) };
     });
   }
 
@@ -173,31 +175,5 @@ export class HistorialPage implements OnInit, OnDestroy {
   segmentoCambiado(evento: CustomEvent<SegmentChangeEventDetail>) {
     this.segmentoActivo = evento.detail.value;
     this.filtrarAsistencias();
-  }
-
-  deFechaAString(fecha: Date) {
-    let fechaString = fecha.getFullYear() + '-';
-    fechaString += (fecha.getMonth() + 1) < 10 ? '0' + (fecha.getMonth() + 1) : + (fecha.getMonth() + 1);
-    fechaString += fecha.getDate() < 10 ? '-0' + fecha.getDate() : '-' + fecha.getDate();
-
-    return fechaString;
-  }
-
-  deStringAHora(horaString: string) {
-    const tiempo = horaString.split(':');
-    let hora = new Date();
-    hora.setHours(+tiempo[0]);
-    hora.setMinutes(+tiempo[1]);
-    hora.setSeconds(0);
-    hora.setMilliseconds(0);
-
-    return hora;
-  }
-
-  deHoraAString(hora: Date) {
-    let horaString = hora.getHours() < 10 ? '0' + hora.getHours() : '' + hora.getHours();
-    horaString += hora.getMinutes() < 10 ? ':0' + hora.getMinutes() : ':' + hora.getMinutes();
-
-    return horaString;
   }
 }

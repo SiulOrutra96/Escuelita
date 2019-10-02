@@ -1,0 +1,116 @@
+<ion-grid no-padding>
+  <!-- Rasgos periodo 1 -->
+  <ion-row padding-horizontal class="background-medium">
+    <ion-col no-padding align-self-center size="auto" (click)="contraerPeriodo1()">
+      <ion-label>
+        <h2>Periodo 1</h2>
+      </ion-label>
+    </ion-col>
+    <ion-col no-padding>
+      <ion-button color="light" fill="clear" (click)="abrirRasgoModal('trimestre1')">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col no-padding size="auto" (click)="contraerPeriodo1()">
+      <ion-button color="light" fill="clear">
+        <ion-icon *ngIf="mostrarPeriodo1" name="arrow-dropdown" slot="icon-only"></ion-icon>
+        <ion-icon *ngIf="!mostrarPeriodo1" name="arrow-dropright" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ng-container *ngIf="mostrarPeriodo1">
+    <ion-row padding-horizontal align-items-center *ngFor="let rasgo of clase.rasgos.trimestre1; let i = index"
+      [ngClass]="{'fila-par': i % 2 === 0}">
+      <ion-col size="4">{{ rasgo.nombre }}</ion-col>
+      <ion-col size="2">{{ rasgo.porcentaje }}%</ion-col>
+      <ion-col>
+        <ion-button color="secondary" fill="clear" (click)="abrirCalificarModal('trimestre1', i)">
+          Calificar
+        </ion-button>
+        <ion-button color="secondary" fill="clear" (click)="abrirRasgoModal('trimestre1', rasgo)">
+          Editar
+        </ion-button>
+        <ion-button color="danger" fill="clear" (click)="removerRasgo('trimestre1', i)">
+          <ion-icon name="trash" slot=icon-only></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+  <!-- fin: Rasgos periodo 1 -->
+  <!-- Rasgos periodo 2 -->
+  <ion-row padding-horizontal class="background-medium">
+    <ion-col no-padding align-self-center size="auto" (click)="contraerPeriodo2()">
+      <ion-label>
+        <h2>Periodo 2</h2>
+      </ion-label>
+    </ion-col>
+    <ion-col no-padding>
+      <ion-button color="light" fill="clear" (click)="abrirRasgoModal('trimestre2')">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col no-padding size="auto" (click)="contraerPeriodo2()">
+      <ion-button color="light" fill="clear">
+        <ion-icon *ngIf="mostrarPeriodo2" name="arrow-dropdown" slot="icon-only"></ion-icon>
+        <ion-icon *ngIf="!mostrarPeriodo2" name="arrow-dropright" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ng-container *ngIf="mostrarPeriodo2">
+    <ion-row padding-horizontal align-items-center *ngFor="let rasgo of clase.rasgos.trimestre2; let i = index"
+      [ngClass]="{'fila-par': i % 2 === 0}">
+      <ion-col size="4">{{ rasgo.nombre }}</ion-col>
+      <ion-col size="2">{{ rasgo.porcentaje }}%</ion-col>
+      <ion-col>
+        <ion-button color="secondary" fill="clear" (click)="abrirCalificarModal('trimestre2', i)">
+          Calificar
+        </ion-button>
+        <ion-button color="secondary" fill="clear" (click)="abrirRasgoModal('trimestre2', rasgo)">
+          Editar
+        </ion-button>
+        <ion-button color="danger" fill="clear" (click)="removerRasgo('trimestre2', i)">
+          <ion-icon name="trash" slot=icon-only></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+  <!-- fin: Rasgos periodo2 -->
+  <!-- Rasgos periodo 3 -->
+  <ion-row padding-horizontal class="background-medium">
+    <ion-col no-padding align-self-center size="auto" (click)="contraerPeriodo3()">
+      <ion-label>
+        <h2>Periodo 3</h2>
+      </ion-label>
+    </ion-col>
+    <ion-col no-padding>
+      <ion-button color="light" fill="clear" (click)="abrirRasgoModal('trimestre3')">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col no-padding size="auto" (click)="contraerPeriodo3()">
+      <ion-button color="light" fill="clear">
+        <ion-icon *ngIf="mostrarPeriodo3" name="arrow-dropdown" slot="icon-only"></ion-icon>
+        <ion-icon *ngIf="!mostrarPeriodo3" name="arrow-dropright" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ng-container *ngIf="mostrarPeriodo2">
+    <ion-row padding-horizontal align-items-center *ngFor="let rasgo of clase.rasgos.trimestre3; let i = index"
+      [ngClass]="{'fila-par': i % 2 === 0}">
+      <ion-col size="4">{{ rasgo.nombre }}</ion-col>
+      <ion-col size="2">{{ rasgo.porcentaje }}%</ion-col>
+      <ion-col>
+        <ion-button color="secondary" fill="clear" (click)="abrirCalificarModal('trimestre3', i)">
+          Calificar
+        </ion-button>
+        <ion-button color="secondary" fill="clear" (click)="abrirRasgoModal('trimestre3', rasgo)">
+          Editar
+        </ion-button>
+        <ion-button color="danger" fill="clear" (click)="removerRasgo('trimestre3', i)">
+          <ion-icon name="trash" slot=icon-only></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+  <!-- fin: Rasgos periodo 3 -->
+</ion-grid>

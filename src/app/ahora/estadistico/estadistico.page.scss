@@ -1,27 +1,3 @@
-.ASISTENCIA {
-    background-color: var(--ion-color-success);
-    color: white;
-    font-weight: bold;
-    border-left: 2px solid var(--ion-color-medium);
-    border-right: 2px solid var(--ion-color-medium);
-}
-
-.FALTA {
-    background-color: var(--ion-color-danger);
-    color: white;
-    font-weight: bold;
-    border-left: 2px solid var(--ion-color-medium);
-    border-right: 2px solid var(--ion-color-medium);
-}
-
-.JUSTIFICACION {
-    background-color: var(--ion-color-warning);
-    color: white;
-    font-weight: bold;
-    border-left: 2px solid var(--ion-color-medium);
-    border-right: 2px solid var(--ion-color-medium);
-}
-
 .x-scroll {
     overflow: auto;
     height: -webkit-fill-available;

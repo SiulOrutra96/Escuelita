@@ -5,7 +5,8 @@
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Estadístico {{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}
+      Estadístico <span
+        *ngIf="clase">{{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -25,40 +26,44 @@
         <th rowspan="2">No.</th>
         <th rowspan="2">Nombre</th>
         <th rowspan="2">Apellido</th>
-        <th *ngFor="let trimestre of trimestres" colspan="5" class="cabecera-superior" text-center>
-          {{ trimestre.nombre }}</th>
+        <th colspan="5" class="cabecera-superior" text-center>Inasistencias</th>
+        <th colspan="7" class="cabecera-superior" text-center>Aprovechamiento</th>
       </tr>
       <tr class="borde">
+        <th *ngFor="let trimestre of trimestres" class="cabecera-vertical">
+          <div text-wrap text-center>{{ trimestre.nombre }}</div>
+        </th>
+        <th class="cabecera-vertical">
+          <div text-wrap text-center>Sesiones impartidas</div>
+        </th>
+        <th class="cabecera-vertical">
+          <div text-wrap text-center class="margin-17">Porcentaje de asistencias</div>
+        </th>
         <ng-container *ngFor="let trimestre of trimestres">
           <th class="cabecera-vertical">
-            <div text-wrap text-center>Sesiones impartidas</div>
+            <div text-wrap text-center>{{ trimestre.nombre }}</div>
           </th>
           <th class="cabecera-vertical">
-            <div text-wrap text-center>Faltas</div>
-          </th>
-          <th class="cabecera-vertical">
-            <div text-wrap text-center class="margin-17">Justificaciones</div>
-          </th>
-          <th class="cabecera-vertical">
-            <div text-wrap text-center>Asistencias</div>
-          </th>
-          <th class="cabecera-vertical">
-            <div text-wrap text-center>Porcentaje de asistencias</div>
+            <div text-wrap text-center>Regularización {{ trimestre.nombre }}</div>
           </th>
         </ng-container>
+        <th class="cabecera-vertical">
+          <div text-wrap text-center>Promedio final</div>
+        </th>
       </tr>
       <tr *ngFor="let alumno of alumnos; let i = index"
         [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0, 'borde-abajo': i === alumnos.length - 1}">
-        <td>{{ i + 1 }}</td>
+        <td>{{ alumno.numeroLista }}</td>
         <td text-nowrap>{{ alumno.nombre }}</td>
         <td text-nowrap>{{ alumno.apellido }}</td>
-        <ng-container *ngFor="let trimestre of trimestres">
-          <td class="borde" text-center>{{ trimestre.sesiones }}</td>
-          <td class="borde" text-center>{{ trimestre.faltas[i] }}</td>
-          <td class="borde" text-center>{{ trimestre.justificaciones[i] }}</td>
-          <td class="borde" text-center>{{ trimestre.asistencias[i] }}</td>
-          <td class="borde" text-center>{{ trimestre.porcentaje[i] | number : '0.0-2' }}%</td>
+        <td *ngFor="let trimestre of trimestres" class="borde" text-center>{{ trimestre.faltas[i] }}</td>
+        <td class="borde" text-center>{{ asistencias[i].length }}</td>
+        <td class="borde" text-center>{{ calcularPorcentaje(i) | number : '0.0-2' }}%</td>
+        <ng-container *ngFor="let trimestre of trimestres; let j = index">
+          <td class="borde" text-center>{{ calificaciones[i].rasgos[j].calificacionFinal | number : '0.0-2' }}</td>
+          <td class="borde" text-center></td>
         </ng-container>
+        <td class="borde" text-center>{{ calificaciones[i].calificacionFinal | number : '0.0-2' }}</td>
       </tr>
     </table>
   </div>

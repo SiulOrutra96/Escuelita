@@ -66,11 +66,11 @@ export class NuevoAlumnoComponent implements OnInit, OnDestroy {
       apellido: new FormControl(apellido, {
         updateOn: 'change',
         validators: [Validators.required]
-      }),
-      grupoId: new FormControl(grupoId, {
-        updateOn: 'change',
-        validators: [Validators.required]
       })
+      // grupoId: new FormControl(grupoId, {
+      //   updateOn: 'change',
+      //   validators: [Validators.required]
+      // })
     });
   }
 

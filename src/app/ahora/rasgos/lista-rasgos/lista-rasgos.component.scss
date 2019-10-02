@@ -1,0 +1,22 @@
+.background-medium {
+    background-color: var(--ion-color-tertiary);
+    color: var(--ion-color-tertiary-contrast);
+    border-bottom: 2px solid var(--ion-color-light);
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    h2 {
+        font-weight: bold !important;
+    }
+}
+
+.inactive {
+    background: gainsboro;
+}
+
+.fila-par {
+    background-color: var(--ion-color-light);
+    color: var(--ion-color-ligth-contrast);
+}

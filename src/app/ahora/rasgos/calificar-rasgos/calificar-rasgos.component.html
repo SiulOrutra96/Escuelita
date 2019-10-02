@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Calificar {{ rasgos[index].nombre }} ({{ rasgos[index].porcentaje | number : '0.0-2' }}%)</ion-title>
+    <ion-buttons slot="end">
+      <ion-button slot="icon-only" (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <ion-grid no-padding margin-bottom>
+    <ion-row padding-horizontal align-items-center *ngFor="let alumno of alumnos; let i = index"
+      [ngClass]="{'inactive': !alumno.activo, 'fila-par': i % 2 === 0}">
+      <ion-col size="1">{{ alumno.numeroLista }}</ion-col>
+      <ion-col size="4">{{ alumno.nombre }}</ion-col>
+      <ion-col size="4">{{ alumno.apellido }}</ion-col>
+      <ion-col size="3">
+        <ion-item>
+          <ion-label position="floating">Calificación</ion-label>
+          <ion-input type="number" min="0" max="10"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+  <ion-grid no-padding margin-bottom>
+    <ion-row padding-horizontal align-items-center *ngFor="let calificacion of calificaciones; let i = index"
+      [ngClass]="{'fila-par': i % 2 === 0}">
+      <ion-col size="4">{{ calificacion.alumnoNombre }}</ion-col>
+      <ion-col size="5">{{ calificacion.alumnoApellido }}</ion-col>
+      <ion-col size="3">
+        <ion-item>
+          <ion-label position="floating">Calificación</ion-label>
+          <ion-input type="number" [(ngModel)]="calificacion.calificacion" min="0" max="10"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        <ion-button *ngIf="index > 0" color="secondary" fill="clear" (click)="calificar('anterior')">
+          <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+          Anterior
+        </ion-button>
+      </ion-col>
+      <ion-col size="4" text-center (click)="calificar('cerrar')">
+        <ion-button [disabled]="!validarCalificaciones()">
+          Guardar
+        </ion-button>
+      </ion-col>
+      <ion-col size="4" text-end>
+        <ion-button *ngIf="index < rasgos.length - 1" color="secondary" fill="clear" (click)="calificar('siguiente')">
+          Siguiente
+          <ion-icon name="arrow-dropright" slot="end"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

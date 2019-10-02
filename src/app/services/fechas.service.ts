@@ -41,7 +41,7 @@ export class FechasService {
         });
       })
     );
-  
+
   }
   obtenerFechasHabilesDesdeHoy() {
     const hoy = new Date();
@@ -92,6 +92,24 @@ export class FechasService {
 
   eliminarFecha(fechaId: string) {
     return this.fechas.doc(fechaId).delete();
+  }
+
+  deStringAHora(horaString: string) {
+    const tiempo = horaString.split(':');
+    let hora = new Date();
+    hora.setHours(+tiempo[0]);
+    hora.setMinutes(+tiempo[1]);
+    hora.setSeconds(0);
+    hora.setMilliseconds(0);
+
+    return hora;
+  }
+
+  deHoraAString(hora: Date) {
+    let horaString = hora.getHours() < 10 ? '0' + hora.getHours() : '' + hora.getHours();
+    horaString += hora.getMinutes() < 10 ? ':0' + hora.getMinutes() : ':' + hora.getMinutes();
+
+    return horaString;
   }
 
   deFechaAString(fecha: Date) {

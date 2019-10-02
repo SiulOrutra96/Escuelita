@@ -1,0 +1,76 @@
+.x-scroll {
+    overflow: auto;
+    height: -webkit-fill-available;
+}
+
+.tablita {
+    tr {
+        // font-size: smaller;
+
+        &.borde {
+            border-top: 2px solid var(--ion-color-medium);
+            border-bottom: 2px solid var(--ion-color-medium);
+        }
+
+        &.borde-abajo {
+            border-bottom: 2px solid var(--ion-color-medium);
+        }
+
+        th {
+            color: var(--ion-color-medium);
+            padding: 8px;
+            text-align: start;
+
+            &.cabecera-superior {
+                border-left: 2px solid var(--ion-color-medium);
+                border-right: 2px solid var(--ion-color-medium);
+            }
+
+            &.cabecera-vertical {
+                text-align: start;
+                padding: 0px;
+                height: 110px;
+                min-width: 65px;
+                max-width: 65px;
+                border-left: 2px solid var(--ion-color-medium);
+                border-right: 2px solid var(--ion-color-medium);
+
+                div {
+                    transform: rotate(-90deg);
+                    margin: 0 -17px;
+                }
+            }
+
+            &.borde-der {
+                border-right: 2px solid var(--ion-color-medium);
+            }
+
+            &.borde {
+                border-left: 2px solid var(--ion-color-medium);
+                border-right: 2px solid var(--ion-color-medium);
+            }
+        }
+
+        td {
+            padding: 8px;
+
+            &.borde-der {
+                border-right: 2px solid var(--ion-color-medium);
+            }
+
+            &.borde {
+                border-left: 2px solid var(--ion-color-medium);
+                border-right: 2px solid var(--ion-color-medium);
+            }
+        }
+    }
+}
+
+.inactive {
+    background: gainsboro;
+}
+
+.fila-par {
+    background-color: var(--ion-color-light);
+    color: var(--ion-color-ligth-contrast);
+}

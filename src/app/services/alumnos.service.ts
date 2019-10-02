@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
-import { Alumno, Asistencia } from '../models/alumno.model';
+import { Alumno, ClaseAlumno } from '../models/alumno.model';
 import { Grupo } from '../models/grupo.model';
 import { FechasService } from './fechas.service';
 import { Clase } from '../models/clase.model';
@@ -144,9 +144,9 @@ export class AlumnosService {
       }
     });
 
-    const asistencia = new Asistencia(clase.id, fechasAsistencias);
+    const asistencia = new ClaseAlumno(clase.id, fechasAsistencias);
     alumnos.forEach(alumno => {
-      alumno.asistencias.push(asistencia);
+      alumno.clases.push(asistencia);
       this.actualizarAlumno(alumno);
     });
 
@@ -182,9 +182,9 @@ export class AlumnosService {
       }
     });
 
-    const asistencia = new Asistencia(clase.id, fechasAsistencias);
+    const asistencia = new ClaseAlumno(clase.id, fechasAsistencias);
     alumnos.forEach(alumno => {
-      alumno.asistencias.push(asistencia);
+      alumno.clases.push(asistencia);
       this.actualizarAlumno(alumno);
     });
 
@@ -218,8 +218,8 @@ export class AlumnosService {
         }
       });
 
-      const asistencia = new Asistencia(clase.id, fechasAsistencias);
-      alumno.asistencias.push(asistencia);
+      const asistencia = new ClaseAlumno(clase.id, fechasAsistencias);
+      alumno.clases.push(asistencia);
     });
 
     return alumno;
@@ -233,7 +233,7 @@ export class AlumnosService {
     });
 
     alumnos.forEach(alumno => {
-      alumno.asistencias = alumno.asistencias.filter(asistencia => {
+      alumno.clases = alumno.clases.filter(asistencia => {
         if (asistencia.claseId !== clase.id) {
           return asistencia;
         }

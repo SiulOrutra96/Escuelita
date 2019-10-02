@@ -89,7 +89,7 @@ export class ClasesService {
   }
 
   actualizarClase(clase: Clase) {
-    const params = {};
+    let params = {};
 
     for (const key in clase) {
       if (key !== 'id') {
@@ -97,6 +97,7 @@ export class ClasesService {
       }
     }
 
+    params = JSON.parse(JSON.stringify(params));
     return this.clases.doc(clase.id).update(params);
   }
 

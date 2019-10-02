@@ -113,15 +113,12 @@ export class NuevaClaseComponent implements OnInit {
       return;
     }
 
-    const nuevaClase = new Clase(
-      claseForm.value.nombre,
-      this.dias,
-      this.grupos.find(grupo => grupo.id === claseForm.value.grupo),
-      this.claseId
-    );
+    this.clase.nombre = claseForm.value.nombre;
+    this.clase.grupo = this.grupos.find(grupo => grupo.id === claseForm.value.grupo);
+    this.clase.dias = this.dias;
 
     this.modalCtrl.dismiss({
-      clase: nuevaClase
+      clase: this.clase
     }, 'editar');
   }
 

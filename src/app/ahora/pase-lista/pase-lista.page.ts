@@ -84,17 +84,17 @@ export class PaseListaPage implements OnInit, OnDestroy {
 
   inicializarAsitencias() {
     this.asistencias = this.alumnos.map(alumno => {
-      return alumno.asistencias
-        .filter(asistencia => asistencia.claseId === this.clase.id)
-        .map(asistencia => asistencia.fechas[this.hoyString])[0];
+      return alumno.clases
+        .filter(clase => clase.claseId === this.clase.id)
+        .map(clase => clase.fechas[this.hoyString])[0];
     });
   }
 
   darAsistencia(alumnoId: string, estado: number, index: number) {
     this.asistencias[index] = estado;
-    const asistenciasAlumno = this.alumnos[index].asistencias;
+    const asistenciasAlumno = this.alumnos[index].clases;
     asistenciasAlumno[
-      asistenciasAlumno.findIndex(asistencia => asistencia.claseId === this.clase.id)
+      asistenciasAlumno.findIndex(clase => clase.claseId === this.clase.id)
     ].fechas[this.hoyString] = estado;
 
     this.alumnosService.actualizarAlumno(this.alumnos[index]);

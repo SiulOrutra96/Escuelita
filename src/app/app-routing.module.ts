@@ -6,10 +6,10 @@ import { AntiAuthGuard } from './auth/anti-auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'ahora', pathMatch: 'full' },
-  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule', canLoad: [AntiAuthGuard] },
+  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
   { path: 'ahora', loadChildren: './ahora/ahora.module#AhoraPageModule', canLoad: [AuthGuard] },
   { path: 'grupos', loadChildren: './grupos/grupos.module#GruposPageModule', canLoad: [AuthGuard] },
-  { path: 'clases', loadChildren: './clases/clases.module#ClasesPageModule', canLoad: [AuthGuard] }
+  // { path: 'clases', loadChildren: './clases/clases.module#ClasesPageModule', canLoad: [AuthGuard] }
 ];
 
 @NgModule({

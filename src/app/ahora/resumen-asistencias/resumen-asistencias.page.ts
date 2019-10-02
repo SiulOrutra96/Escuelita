@@ -32,7 +32,7 @@ export class ResumenAsistenciasPage implements OnInit, OnDestroy {
 
   trimestres = [
     {
-      inicio: '2019-09-01',
+      inicio: '2019-08-01',
       fin: '2019-09-30',
       nombre: 'Periodo 1',
       sesiones: 0,
@@ -136,14 +136,14 @@ export class ResumenAsistenciasPage implements OnInit, OnDestroy {
 
   inicializarAsitencias() {
     this.asistencias = this.alumnos.map(alumno => {
-      return alumno.asistencias
-        .filter(asistencia => asistencia.claseId === this.clase.id)
-        .map(asistencia => {
+      return alumno.clases
+        .filter(clase => clase.claseId === this.clase.id)
+        .map(clase => {
           let fechas = [];
 
-          for (const key in asistencia.fechas) {
-            if (asistencia.fechas.hasOwnProperty(key) && key <= this.hoyString) {
-              fechas.push({ fecha: key, estado: asistencia.fechas[key] });
+          for (const key in clase.fechas) {
+            if (clase.fechas.hasOwnProperty(key) && key <= this.hoyString) {
+              fechas.push({ fecha: key, estado: clase.fechas[key] });
 
               if (key === this.hoyString) {
                 break;

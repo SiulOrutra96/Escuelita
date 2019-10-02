@@ -9,6 +9,10 @@ const routes: Routes = [
     component: DetallesClasePage,
     children: [
       {
+        path: 'alumnos/:claseId',
+        loadChildren: '../../clases/alumnos/alumnos.module#AlumnosPageModule'
+      },
+      {
         path: 'estadistico/:claseId',
         loadChildren: '../../ahora/estadistico/estadistico.module#EstadisticoPageModule'
       },
