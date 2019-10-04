@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Usuario } from '../models/usuario.model';
+import { UsuariosService } from '../services/usuarios.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,14 +17,20 @@ import { Subscription } from 'rxjs';
 export class AuthPage implements OnInit, OnDestroy {
 
   authSub: Subscription;
+  usuario: Usuario;
 
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
-    private router: Router
+    private router: Router,
+    private usuariosServices: UsuariosService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authSub = this.authService.usuarioActual().subscribe(usuario => {
+      this.usuario = usuario;
+    });
+  }
 
   ngOnDestroy() {
     if (this.authSub) {
@@ -43,8 +51,28 @@ export class AuthPage implements OnInit, OnDestroy {
       .then(loadingEl => {
         loadingEl.present();
         this.authService.iniciarSesion(email, conrasenia).then(res => {
-          loadingEl.dismiss();
-          this.router.navigateByUrl('/ahora/tabs/pase-lista');
+          this.usuariosServices.obtenerUsuario(res.user.uid).pipe(
+            take(1),
+            tap(usuario => {
+              switch (usuario.rol) {
+                case 0:
+                  loadingEl.dismiss();
+                  this.router.navigateByUrl('/inicio');
+                  break;
+                case 1:
+                  loadingEl.dismiss();
+                  this.router.navigateByUrl('/ahora/tabs/pase-lista');
+                  break;
+                case 2:
+                  loadingEl.dismiss();
+                  this.router.navigateByUrl('/ahora/tabs/pase-lista');
+                  break;
+                default:
+                  loadingEl.dismiss();
+                  this.router.navigateByUrl('/inicio');
+              }
+            })
+          ).subscribe();
         }).catch(err => {
           loadingEl.dismiss();
           console.log(err);

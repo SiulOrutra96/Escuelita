@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: ':claseId',
-    loadChildren: './alumnos/alumnos.module#AlumnosPageModule'
+    loadChildren: './detalles-clase/detalles-clase.module#DetallesClasePageModule'
   }
 ];
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { take, map, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { BehaviorSubject, from } from 'rxjs';
 
 import { Usuario } from '../models/usuario.model';
@@ -25,7 +25,6 @@ export class AuthService {
         });
       } else {
         this.usuario.next(undefined);
-        // this.autenticado.next(false);
       }
     });
   }

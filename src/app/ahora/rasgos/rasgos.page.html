@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <!-- <ion-back-button *ngIf="claseId" defaultHref="/grupos"></ion-back-button> -->
+      <ion-back-button *ngIf="claseId" defaultHref="/clases"></ion-back-button>
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>
@@ -50,8 +50,11 @@
         <td padding-left>{{ alumno.numeroLista }}</td>
         <td>{{ alumno.nombre }}</td>
         <td class="borde-der">{{ alumno.apellido }}</td>
-        <td text-center *ngFor="let rasgo of rasgos[i][segmentoActivo].calificacionRasgos" class="borde">{{ rasgo || rasgo === 0 ? rasgo : 'NC' }}</td>
-        <td text-center class="borde">{{ rasgos[i][segmentoActivo].calificacionFinal || rasgos[i][segmentoActivo].calificacionFinal === 0? rasgos[i][segmentoActivo].calificacionFinal : 'NC' }}</td>
+        <td text-center *ngFor="let rasgo of rasgos[i][segmentoActivo].calificacionRasgos" class="borde">
+          {{ rasgo || rasgo === 0 ? rasgo : 'NC' }}</td>
+        <td text-center class="borde">
+          {{ rasgos[i][segmentoActivo].calificacionFinal || rasgos[i][segmentoActivo].calificacionFinal === 0 ? (rasgos[i][segmentoActivo].calificacionFinal | number : '0.0-1') : 'NC' }}
+        </td>
       </tr>
     </table>
   </div>

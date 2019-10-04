@@ -54,7 +54,7 @@ export class AlumnosService {
 
   obtenerAlumno(alumnoId: string) {
     return this.alumnos.doc<Alumno>(alumnoId).valueChanges().pipe(map(alumno => {
-      return { id: alumnoId, ...alumno }
+      return { id: alumnoId, ...alumno };
     }));
   }
 
@@ -182,9 +182,30 @@ export class AlumnosService {
       }
     });
 
-    const asistencia = new ClaseAlumno(clase.id, fechasAsistencias);
     alumnos.forEach(alumno => {
-      alumno.clases.push(asistencia);
+      let fechasAlumno = alumno.clases[
+        alumno.clases.findIndex(claseAl => claseAl.claseId === clase.id)
+      ].fechas;
+      let nuevasFechasAlumno = {};
+
+      for (const key in fechasAlumno) {
+        if (fechasAlumno.hasOwnProperty(key)) {
+          if (key > Object.keys(fechasAsistencias)[0]) {
+            break;
+          }
+          nuevasFechasAlumno[key] = fechasAlumno[key];
+        }
+      }
+
+      for (const key in fechasAsistencias) {
+        if (fechasAsistencias.hasOwnProperty(key)) {
+          nuevasFechasAlumno[key] = fechasAsistencias[key];
+        }
+      }
+
+      alumno.clases[
+        alumno.clases.findIndex(claseAl => claseAl.claseId === clase.id)
+      ].fechas = nuevasFechasAlumno;
       this.actualizarAlumno(alumno);
     });
 

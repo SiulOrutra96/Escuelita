@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button *ngIf="clase" defaultHref="/clases"></ion-back-button>
+      <ion-back-button *ngIf="grupo" defaultHref="/grupos"></ion-back-button>
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Alumnos 
+      <span *ngIf="clase">{{ clase.nombre + ' - ' + clase.grupo.nombre }}</span>
+      <span *ngIf="grupo">{{ grupo.nombre }}</span>
+    </ion-title>
+    <ion-buttons slot="end" (click)="abrirModalAlumno()">
+      <ion-button>
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngIf="!buscando">
+    <ion-item *ngFor="let alumno of alumnos; let i = index">
+      <ion-grid [ngClass]="{'inactive': !alumno.activo}">
+        <ion-row align-items-center>
+          <ion-col size="1">{{ alumno.numeroLista }}</ion-col>
+          <ion-col size="4">{{ alumno.nombre }}</ion-col>
+          <ion-col size="4">{{ alumno.apellido }}</ion-col>
+          <ion-col size="3">
+            <ion-button color="secondary" (click)="abrirModalAlumno(alumno)">
+              <ion-icon name="create" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="alumno.activo" color="warning" (click)="desactivarAlumno(alumno.id)">
+              <ion-icon name="pause" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="!alumno.activo" color="success" (click)="activarAlumno(alumno.id)">
+              <ion-icon name="play" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="!alumno.activo" color="danger" (click)="eliminarAlumno(alumno.id)">
+              <ion-icon name="trash" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+</ion-content>

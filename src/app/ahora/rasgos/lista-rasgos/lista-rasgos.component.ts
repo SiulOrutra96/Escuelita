@@ -51,12 +51,13 @@ export class ListaRasgosComponent implements OnInit {
           this.loadingCtrl.create({ message: 'Agregando rasgo...' }).then(cargador => {
             cargador.present();
 
+            console.log('clase: ', this.clase);
             let contador = 0;
             // se agrega el nuevo rasgo a cada alumno y al arreglo de rasgos
             this.alumnos.forEach(alumno => {
               alumno.clases[
                 alumno.clases.findIndex(clase => clase.claseId === this.clase.id)
-              ].rasgos[trimestre].calificacionRasgos.push(null);
+              ].rasgos[trimestre].calificacionRasgos.push(0);
               this.alumnosService.actualizarAlumno(alumno).then(() => {
                 contador++;
                 if (contador === this.alumnos.length + 1) {

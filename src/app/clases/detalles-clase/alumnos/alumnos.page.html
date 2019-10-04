@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button *ngIf="clase" defaultHref="/clases"></ion-back-button>
+      <ion-back-button *ngIf="grupo" defaultHref="/grupos"></ion-back-button>
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Alumnos 
+      <span *ngIf="clase">{{ clase.nombre + ' - ' + clase.grupo.nombre }}</span>
+      <span *ngIf="grupo">{{ grupo.nombre }}</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid margin-top *ngIf="buscando">
+    <ion-row margin-top>
+      <ion-col text-center>
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngIf="!buscando">
+    <ion-item *ngFor="let alumno of alumnos; let i = index">
+      <ion-grid [ngClass]="{'inactive': !alumno.activo}">
+        <ion-row align-items-center>
+          <ion-col size="1">{{ alumno.numeroLista }}</ion-col>
+          <ion-col size="5">{{ alumno.nombre }}</ion-col>
+          <ion-col size="5">{{ alumno.apellido }}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+</ion-content>

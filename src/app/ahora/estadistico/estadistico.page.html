@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button *ngIf="claseId" defaultHref="/asistencias"></ion-back-button>
+      <ion-back-button *ngIf="claseId" defaultHref="/clases"></ion-back-button>
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>
@@ -60,10 +60,10 @@
         <td class="borde" text-center>{{ asistencias[i].length }}</td>
         <td class="borde" text-center>{{ calcularPorcentaje(i) | number : '0.0-2' }}%</td>
         <ng-container *ngFor="let trimestre of trimestres; let j = index">
-          <td class="borde" text-center>{{ calificaciones[i].rasgos[j].calificacionFinal | number : '0.0-2' }}</td>
+          <td class="borde" text-center>{{ calificaciones[i].rasgos[j].calificacionFinal | number : '0.0-1' }}</td>
           <td class="borde" text-center></td>
         </ng-container>
-        <td class="borde" text-center>{{ calificaciones[i].calificacionFinal | number : '0.0-2' }}</td>
+        <td class="borde" text-center>{{ calificaciones[i].calificacionFinal | number : '0.0-1' }}</td>
       </tr>
     </table>
   </div>

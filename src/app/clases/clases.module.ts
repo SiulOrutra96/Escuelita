@@ -4,22 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ClasesPage } from './clases.page';
-import { NuevaClaseComponent } from './nueva-clase/nueva-clase.component';
 import { ClasesRoutingModule } from './clases-routing.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ClasesRoutingModule
+    ClasesRoutingModule,
+    PipesModule
   ],
   declarations: [
-    ClasesPage,
-    NuevaClaseComponent
-  ],
-  entryComponents: [
-    NuevaClaseComponent
+    ClasesPage
   ]
 })
 export class ClasesPageModule {}

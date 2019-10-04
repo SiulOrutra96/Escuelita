@@ -1,0 +1,62 @@
+<ion-menu side="start" menuId="m1" contentId="principal">
+  <ion-header padding>
+    <ion-title>
+      Escuelita
+    </ion-title>
+  </ion-header>
+
+  <ion-content>
+    <ion-list *ngIf="usuario && usuario.rol === 0">
+      <ion-menu-toggle menu="m1">
+        <ion-item routerLink="/inicio">
+          <ion-icon name="home" slot="start"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle menu="m1">
+        <ion-item routerLink="/grupos">
+          <ion-icon name="contacts" slot="start"></ion-icon>
+          <ion-label>Grupos</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle menu="m1">
+        <ion-item routerLink="/maestros">
+          <ion-icon name="school" slot="start"></ion-icon>
+          <ion-label>Maestros</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle menu="m1">
+        <ion-item button (click)="cerrarSesion()">
+          <ion-icon name="exit" slot="start"></ion-icon>
+          <ion-label>Cerrar sesión</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+    <ion-list *ngIf="usuario && usuario.rol === 2">
+      <ion-menu-toggle menu="m1">
+        <ion-item routerLink="/ahora/tabs/pase-lista">
+          <ion-icon name="time" slot="start"></ion-icon>
+          <ion-label>Ahora</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle menu="m1">
+        <ion-item routerLink="/clases">
+          <ion-icon name="contacts" slot="start"></ion-icon>
+          <ion-label>Clases</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <!-- <ion-menu-toggle menu="m1">
+        <ion-item routerLink="/clases">
+          <ion-icon name="contacts" slot="start"></ion-icon>
+          <ion-label>Alumnos</ion-label>
+        </ion-item>
+      </ion-menu-toggle> -->
+      <ion-menu-toggle menu="m1">
+        <ion-item button (click)="cerrarSesion()">
+          <ion-icon name="exit" slot="start"></ion-icon>
+          <ion-label>Cerrar sesión</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>

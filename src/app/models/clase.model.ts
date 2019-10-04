@@ -2,13 +2,13 @@ import { Grupo } from './grupo.model';
 import { DiaSemana } from './fecha.model';
 
 export enum HoraClase {
-    '7:00' = 1,
-    '8:00',
-    '9:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
+    '14:00' = 1,
+    '14:50',
+    '15:40',
+    '16:30',
+    '17:20',
+    '18:10',
+    '19:00',
 }
 
 export class Rasgo {

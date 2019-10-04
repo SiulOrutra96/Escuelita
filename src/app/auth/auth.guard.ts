@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Router, Route, UrlSegment } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { take, tap, map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -20,7 +20,6 @@ export class AuthGuard implements CanLoad {
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
-    console.log('mmmm: ', this.authService.aut);
     return this.firebaseAuth.authState.pipe(
       map(user => {
         if (!user) {

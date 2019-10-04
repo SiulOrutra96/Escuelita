@@ -32,7 +32,7 @@ export class UsuariosService {
 
   obtenerMaestros() {
     return this.firestore.collection<Usuario>('usuarios', ref => {
-      return ref.where('role', '==', 1).orderBy('nombre');
+      return ref.where('rol', '==', 2).orderBy('nombre');
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

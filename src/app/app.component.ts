@@ -33,15 +33,4 @@ export class AppComponent {
       this.seederService.main();
     });
   }
-
-  cerrarSesion() {
-    this.loadingCtrl.create({ message: 'Cerrando sesión...' })
-      .then(cargador => {
-        cargador.present();
-        this.authService.cerrarSesion().then(() => {
-          cargador.dismiss();
-          this.router.navigateByUrl('/auth');
-        });
-      });
-  }
 }

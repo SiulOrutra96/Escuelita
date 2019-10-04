@@ -74,8 +74,8 @@ export class EstadisticoPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.hoy = new Date();
 
-    this.hoy.setHours(8);
-    this.hoy.setMinutes(10);
+    this.hoy.setHours(15);
+    this.hoy.setMinutes(0);
     this.hoy.setMonth(10);
     this.hoy.setDate(29);
 

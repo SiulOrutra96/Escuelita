@@ -29,7 +29,9 @@ export class GruposService {
   }
 
   obtenerGrupo(grupoId: string) {
-    return this.grupos.doc<Grupo>(grupoId).valueChanges();
+    return this.grupos.doc<Grupo>(grupoId).valueChanges().pipe(map(grupo => {
+      return {id: grupoId, ...grupo};
+    }));
   }
 
   agregarGrupo(grupo: Grupo) {

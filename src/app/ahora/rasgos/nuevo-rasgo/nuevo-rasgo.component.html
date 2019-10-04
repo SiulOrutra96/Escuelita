@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Nueva rasgo</ion-title>
+    <ion-title>{{ agregar ? 'Nuevo rasgo' : 'Editar rasgo' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button slot="icon-only" (click)="cerrar()">
         <ion-icon name="close"></ion-icon>
@@ -25,7 +25,6 @@
             <ion-label position="floating">Porcentaje</ion-label>
             <ion-input type="number" [(ngModel)]="rasgo.porcentaje" name="porcentaje" min="0" max="maximo" required
               #porcentajeCtrl="ngModel"></ion-input>
-            <!-- <ion-label>%</ion-label> -->
           </ion-item>
         </ion-col>
         <ion-col align-self-center size="1" size-sm="1">
