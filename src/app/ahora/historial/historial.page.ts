@@ -9,6 +9,7 @@ import { ClasesService } from 'src/app/services/clases.service';
 import { Clase, HoraClase } from 'src/app/models/clase.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { FechasService } from 'src/app/services/fechas.service';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-historial',
@@ -17,6 +18,7 @@ import { FechasService } from 'src/app/services/fechas.service';
 })
 export class HistorialPage implements OnInit, OnDestroy {
 
+  usuario: Usuario;
   alumnos: Alumno[];
   alumnosSub: Subscription;
   claseId: string;
@@ -63,14 +65,17 @@ export class HistorialPage implements OnInit, OnDestroy {
     this.buscando = true;
     this.route.paramMap.subscribe(parametros => {
       if (parametros.has('claseId')) {
-        this.claseId = parametros.get('claseId');
-        this.claseSub = this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
-          this.clase = clase;
-          this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
-            this.alumnos = alumnos;
-            this.inicializarAsitencias();
-            this.filtrarAsistencias();
-            this.buscando = false;
+        this.authSub = this.authService.usuarioActual().subscribe(usuario => {
+          this.usuario = usuario;
+          this.claseId = parametros.get('claseId');
+          this.claseSub = this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
+            this.clase = clase;
+            this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+              this.alumnos = alumnos;
+              this.inicializarAsitencias();
+              this.filtrarAsistencias();
+              this.buscando = false;
+            });
           });
         });
       } else {

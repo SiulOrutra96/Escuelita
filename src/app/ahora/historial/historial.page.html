@@ -1,11 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button *ngIf="claseId" defaultHref="/clases"></ion-back-button>
+      <ion-back-button *ngIf="claseId && (!usuario || usuario.rol !== 0)" defaultHref="/clases"></ion-back-button>
+      <ion-back-button *ngIf="usuario && usuario.rol === 0" defaultHref="/grupos"></ion-back-button>
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Historial de Asistencias  <span *ngIf="clase">{{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}</span>
+      Historial de Asistencias <span
+        *ngIf="clase">{{ clase && clase.grupo ? ' - ' + clase.nombre + ' ' + clase.grupo.nombre : '' }}</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>

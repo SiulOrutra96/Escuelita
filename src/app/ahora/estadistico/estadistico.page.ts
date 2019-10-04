@@ -8,6 +8,7 @@ import { Clase, HoraClase } from 'src/app/models/clase.model';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { FechasService } from 'src/app/services/fechas.service';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-estadistico',
@@ -16,6 +17,7 @@ import { FechasService } from 'src/app/services/fechas.service';
 })
 export class EstadisticoPage implements OnInit, OnDestroy {
 
+  usuario: Usuario;
   alumnos: Alumno[];
   alumnosSub: Subscription;
   claseId: string;
@@ -90,16 +92,19 @@ export class EstadisticoPage implements OnInit, OnDestroy {
     this.buscando = true;
     this.route.paramMap.subscribe(parametros => {
       if (parametros.has('claseId')) {
-        this.claseId = parametros.get('claseId');
-        this.claseSub = this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
-          this.clase = clase;
-          this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
-            this.alumnos = alumnos;
-            this.inicializarAsitencias();
-            this.filtrarAsistencias();
-            this.inicializarCalificaciones();
-            console.log('calfs: ', this.calificaciones);
-            this.buscando = false;
+        this.authSub = this.authService.usuarioActual().subscribe(usuario => {
+          this.usuario = usuario;
+          this.claseId = parametros.get('claseId');
+          this.claseSub = this.clasesService.obtenerClase(this.claseId).subscribe(clase => {
+            this.clase = clase;
+            this.alumnosSub = this.alumnosService.obtenerAlumnosPorGrupo(this.clase.grupo.id).subscribe(alumnos => {
+              this.alumnos = alumnos;
+              this.inicializarAsitencias();
+              this.filtrarAsistencias();
+              this.inicializarCalificaciones();
+              console.log('calfs: ', this.calificaciones);
+              this.buscando = false;
+            });
           });
         });
       } else {
@@ -174,7 +179,7 @@ export class EstadisticoPage implements OnInit, OnDestroy {
             }
           }
 
-          return {rasgos, calificacionFinal: clase.calificacion};
+          return { rasgos, calificacionFinal: clase.calificacion };
         })[0];
     });
   }

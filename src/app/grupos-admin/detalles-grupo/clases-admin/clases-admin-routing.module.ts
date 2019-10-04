@@ -7,10 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: ClasesAdminPage
-  },
-  {
-    path: ':claseId',
-    loadChildren: './detalles-clase/detalles-clase.module#DetallesClasePageModule'
   }
 ];
 
